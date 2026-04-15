@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SHO — OS</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+
+:root {
+  --bg: #060608;
+  --surface: #0d0d11;
+  --border: rgba(255,255,255,0.07);
+  --dim: #3a3a50;
+  --silver: #8888a0;
+  --white: #eeeeee;
+
+  --gold: #d4af37;
+  --gold-glow: rgba(212,175,55,0.16);
+  --gold-dim: rgba(212,175,55,0.4);
+
+  --video: #5b9bd5;
+  --video-glow: rgba(91,155,213,0.15);
+  --video-dim: rgba(91,155,213,0.4);
+
+  --festival: #c8765a;
+  --festival-glow: rgba(200,118,90,0.15);
+  --festival-dim: rgba(200,118,90,0.4);
+
+  --complete: #4caf6e;
+  --complete-glow: rgba(76,175,110,0.18);
+
+  --urgent: #cf4a3c;
+  --urgent-glow: rgba(207,74,60,0.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.04) 0%, transparent 55%);
+  pointer-events:none; z-index:0;
+}
+
+/* ─── HEADER ─── */
+.header {
+  position:relative; z-index:10;
+  padding: 28px 24px 18px;
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:flex-end; justify-content:space-between;
+}
+
+.header-left h1 {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:44px; letter-spacing:0.08em; line-height:1;
+}
+
+.header-left h1 span { color:var(--dim); }
+
+.header-date {
+  font-family:'Space Mono',monospace;
+  font-size:10px; letter-spacing:0.2em;
+  color:var(--dim); margin-top:5px;
+}
+
+.countdown-wrap { text-align:right; }
+
+.countdown-num {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:38px; letter-spacing:0.08em;
+  color:var(--gold); line-height:1;
+}
+
+.countdown-label {
+  font-family:'Space Mono',monospace;
+  font-size:9px; letter-spacing:0.2em; color:var(--dim);
+}
+
+/* ─── XP ROW ─── */
+.xp-row {
+  position:relative; z-index:5;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  display:flex; align-items:center; gap:12px;
+}
+
+.xp-label {
+  font-family:'Space Mono',monospace;
+  font-size:9px; letter-spacing:0.25em; color:var(--dim); flex-shrink:0;
+}
+
+.xp-track {
+  flex:1; height:3px;
+  background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden;
+}
+
+.xp-fill {
+  height:100%;
+  background: linear-gradient(90deg, var(--gold), var(--video));
+  border-radius:2px;
+  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
+}
+
+.xp-num {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px; letter-spacing:0.1em; flex-shrink:0;
+}
+
+/* ─── TABS ─── */
+.tabs {
+  position:relative; z-index:5;
+  display:flex; border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  flex:1; padding:14px 0;
+  text-align:center;
+  font-family:'Space Mono',monospace;
+  font-size:10px; letter-spacing:0.25em;
+  text-transform:uppercase; color:var(--dim);
+  cursor:pointer; border:none; background:transparent;
+  border-bottom:2px solid transparent;
+  transition:all 0.2s; position:relative;
+}
+
+.tab.active {
+  color:var(--white);
+  border-bottom-color:var(--gold);
+}
+
+.tab-badge {
+  display:inline-block;
+  background:var(--gold-dim);
+  color:var(--gold);
+  font-size:9px; padding:1px 5px;
+  border-radius:1px; margin-left:5px;
+  font-family:'Space Mono',monospace;
+}
+
+/* ─── PANELS ─── */
+.panel { display:none; }
+.panel.active { display:block; }
+
+/* ══════════════════════════════
+   DAILY PANEL
+══════════════════════════════ */
+
+.session-row {
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--border);
+  display:flex; gap:8px; align-items:center;
+}
+
+.session-label {
+  font-family:'Space Mono',monospace;
+  font-size:9px; letter-spacing:0.25em; color:var(--dim); flex-shrink:0;
+}
+
+.session-btn {
+  padding:4px 12px; border-radius:2px;
+  border:1px solid var(--border);
+  background:transparent; cursor:pointer;
+  font-family:'Space Mono',monospace;
+  font-size:10px; letter-spacing:0.1em;
+  color:var(--dim); transition:all 0.2s;
+}
+
+.session-btn.active.morning { background:rgba(232,149,106,0.1); border-color:rgba(232,149,106,0.4); color:#e8956a; }
+.session-btn.active.night   { background:rgba(122,155,213,0.1); border-color:rgba(122,155,213,0.4); color:#7a9bd5; }
+
+.session-time { margin-left:auto; font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); }
+
+.goals { padding:18px 24px; display:flex; flex-direction:column; gap:8px; }
+
+.goal {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:3px; padding:14px 16px;
+  display:flex; align-items:center; gap:14px;
+  cursor:pointer; transition:all 0.25s ease;
+  user-select:none; position:relative; overflow:hidden;
+}
+
+.goal::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:var(--border); transition:background 0.3s;
+}
+
+.goal:hover { border-color:rgba(255,255,255,0.12); }
+
+.goal.done { background:rgba(76,175,110,0.05); border-color:rgba(76,175,110,0.2); }
+.goal.done::before { background:var(--complete); }
+
+.goal-check {
+  width:20px; height:20px; flex-shrink:0;
+  border:1px solid var(--dim); border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:11px; transition:all 0.25s;
+}
+
+.goal.done .goal-check { background:var(--complete); border-color:var(--complete); color:#fff; }
+
+.goal-icon { font-size:18px; flex-shrink:0; }
+
+.goal-content { flex:1; }
+
+.goal-name {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px; letter-spacing:0.1em; line-height:1;
+  transition:color 0.3s;
+}
+
+.goal.done .goal-name { color:var(--silver); }
+
+.goal-sub {
+  font-size:10px; color:var(--dim);
+  font-family:'Space Mono',monospace;
+  margin-top:2px; letter-spacing:0.04em; line-height:1.4;
+}
+
+.goal-tag {
+  font-family:'Space Mono',monospace; font-size:8px;
+  letter-spacing:0.15em; padding:2px 7px;
+  border-radius:1px; border:1px solid; flex-shrink:0;
+}
+
+/* streak */
+.streak-row {
+  padding: 14px 24px;
+  border-top: 1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+}
+
+.streak-left { display:flex; flex-direction:column; gap:2px; }
+
+.streak-label {
+  font-family:'Space Mono',monospace;
+  font-size:9px; letter-spacing:0.25em; color:var(--dim);
+}
+
+.streak-num {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:32px; letter-spacing:0.1em; line-height:1;
+  color:var(--gold);
+}
+
+.streak-sub { font-family:'Space Mono',monospace; font-size:9px; color:var(--dim); }
+
+.streak-right { display:flex; flex-direction:column; align-items:flex-end; gap:5px; }
+
+.prog-label-s { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--dim); }
+
+.prog-bar-s { width:110px; height:3px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
+
+.prog-fill-s {
+  height:100%;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  border-radius:2px; transition:width 0.6s ease;
+}
+
+.prog-pct { font-family:'Space Mono',monospace; font-size:9px; color:var(--silver); }
+
+/* history dots */
+.history-wrap { padding:16px 24px 8px; }
+
+.history-label {
+  font-family:'Space Mono',monospace; font-size:9px;
+  letter-spacing:0.25em; color:var(--dim); margin-bottom:10px;
+}
+
+.dots-row { display:flex; gap:5px; flex-wrap:wrap; }
+
+.day-dot {
+  width:26px; height:26px; border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Space Mono',monospace; font-size:8px;
+  border:1px solid var(--border); color:var(--dim);
+  background:var(--surface);
+}
+
+.day-dot.full  { background:rgba(76,175,110,0.1); border-color:rgba(76,175,110,0.3); color:var(--complete); }
+.day-dot.partial { background:rgba(212,175,55,0.07); border-color:rgba(212,175,55,0.2); color:var(--gold-dim); }
+.day-dot.today { border-color:var(--silver); color:var(--white); }
+
+/* complete banner */
+.complete-banner {
+  margin:0 24px 16px;
+  padding:16px; background:rgba(76,175,110,0.07);
+  border:1px solid rgba(76,175,110,0.3); border-radius:3px;
+  text-align:center; display:none;
+}
+.complete-banner.show { display:block; animation:fadeUp 0.4s ease; }
+.banner-title { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:0.15em; color:var(--complete); }
+.banner-sub { font-family:'Space Mono',monospace; font-size:9px; color:var(--silver); letter-spacing:0.1em; margin-top:3px; }
+
+/* ══════════════════════════════
+   TREE PANEL
+══════════════════════════════ */
+
+.tree-panel { padding:24px 24px 40px; }
+
+.window-block { margin-bottom:40px; }
+
+.window-header {
+  display:flex; align-items:center; gap:12px;
+  margin-bottom:16px; flex-wrap:wrap;
+}
+
+.w-date {
+  font-family:'Space Mono',monospace; font-size:9px;
+  letter-spacing:0.3em; color:var(--dim); flex-shrink:0;
+}
+
+.w-title {
+  font-family:'Bebas Neue',sans-serif;
+  font-size:20px; letter-spacing:0.1em; line-height:1;
+}
+
+.w-divider { flex:1; height:1px; background:var(--border); }
+
+.w-tag {
+  font-family:'Space Mono',monospace; font-size:8px;
+  letter-spacing:0.2em; padding:3px 8px;
+  border:1px solid; border-radius:1px; flex-shrink:0;
+}
+
+.node-grid { display:flex; gap:8px; flex-wrap:wrap; }
+
+/* NODE */
+.node {
+  width:148px; flex-shrink:0;
+  cursor:pointer; transition:transform 0.2s ease;
+}
+
+.node:hover:not(.locked) { transform:translateY(-3px); }
+
+.node-inner {
+  background:var(--surface); border:1px solid var(--border);
+  padding:12px 13px 11px; border-radius:3px;
+  transition:all 0.25s ease; position:relative; overflow:hidden;
+  height:100%;
+}
+
+.node.track-event .node-inner  { border-top:2px solid var(--gold-dim); }
+.node.track-video .node-inner  { border-top:2px solid var(--video-dim); }
+.node.track-fest  .node-inner  { border-top:2px solid var(--festival-dim); }
+.node.track-urgent .node-inner { border-top:2px solid rgba(207,74,60,0.55); }
+
+.node.track-event:not(.locked):hover .node-inner  { border-color:var(--gold);    box-shadow:0 0 16px var(--gold-glow),    0 6px 18px rgba(0,0,0,0.4); }
+.node.track-video:not(.locked):hover .node-inner  { border-color:var(--video);   box-shadow:0 0 16px var(--video-glow),   0 6px 18px rgba(0,0,0,0.4); }
+.node.track-fest:not(.locked):hover  .node-inner  { border-color:var(--festival);box-shadow:0 0 16px var(--festival-glow),0 6px 18px rgba(0,0,0,0.4); }
+.node.track-urgent:not(.locked):hover .node-inner { border-color:var(--urgent);  box-shadow:0 0 16px var(--urgent-glow),  0 6px 18px rgba(0,0,0,0.4); }
+
+.node.complete .node-inner {
+  border-color:var(--complete) !important;
+  background:rgba(76,175,110,0.05);
+  box-shadow:0 0 12px var(--complete-glow);
+}
+
+.node.locked { cursor:default; pointer-events:none; }
+.node.locked .node-inner { background:rgba(5,5,7,0.9); border-color:rgba(255,255,255,0.03) !important; }
+
+.node-icon { font-size:16px; margin-bottom:6px; display:block; transition:filter 0.3s; }
+.node.locked .node-icon { filter:grayscale(1); opacity:0.15; }
+
+.node-name {
+  font-family:'Bebas Neue',sans-serif; font-size:13px;
+  letter-spacing:0.1em; line-height:1.1; margin-bottom:3px;
+  color:var(--white); transition:color 0.3s;
+}
+.node.locked .node-name { color:#181820; }
+
+.node-desc { font-size:9px; color:var(--dim); line-height:1.5; font-family:'Space Mono',monospace; }
+.node.locked .node-desc { color:#181820; }
+
+.node-xp {
+  display:inline-block; margin-top:7px;
+  font-family:'Space Mono',monospace; font-size:8px;
+  letter-spacing:0.1em; padding:2px 6px;
+  border:1px solid var(--border); border-radius:1px;
+}
+.node.track-event  .node-xp { color:var(--gold-dim);     border-color:rgba(212,175,55,0.12); }
+.node.track-video  .node-xp { color:var(--video-dim);    border-color:rgba(91,155,213,0.12); }
+.node.track-fest   .node-xp { color:var(--festival-dim); border-color:rgba(200,118,90,0.12); }
+.node.track-urgent .node-xp { color:rgba(207,74,60,0.6); border-color:rgba(207,74,60,0.12); }
+.node.locked       .node-xp { color:#181820; border-color:rgba(255,255,255,0.02); }
+
+.node-badge { position:absolute; top:9px; right:9px; font-size:11px; display:none; }
+.node.complete .node-badge.done      { display:block; color:var(--complete); }
+.node.locked   .node-badge.lock      { display:block; opacity:0.18; }
+
+.node.track-urgent:not(.complete):not(.locked) .node-inner::after {
+  content:''; position:absolute; top:8px; right:8px;
+  width:5px; height:5px; border-radius:50%;
+  background:var(--urgent); animation:pulse 1.8s infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
+
+.window-break {
+  display:flex; align-items:center; gap:10px;
+  margin: -16px 0 28px; color:var(--dim);
+  font-family:'Space Mono',monospace; font-size:9px;
+  letter-spacing:0.2em;
+}
+.window-break::before, .window-break::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* tree progress */
+.tree-progress {
+  border-top:1px solid var(--border);
+  padding:16px 24px 8px;
+  display:flex; gap:20px; flex-wrap:wrap;
+}
+
+.tp-item { display:flex; flex-direction:column; gap:4px; }
+
+.tp-label {
+  font-family:'Space Mono',monospace; font-size:8px;
+  letter-spacing:0.25em; text-transform:uppercase;
+}
+
+.tp-bar { width:90px; height:2px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
+.tp-fill { height:100%; border-radius:2px; transition:width 0.7s ease; }
+.tp-fill.event    { background:var(--gold); }
+.tp-fill.video    { background:var(--video); }
+.tp-fill.festival { background:var(--festival); }
+
+.tp-count { font-family:'Space Mono',monospace; font-size:8px; color:var(--dim); }
+
+/* ─── FOOTER ─── */
+.footer {
+  position:relative; z-index:5;
+  padding:12px 24px 36px;
+  display:flex; justify-content:space-between;
+  border-top:1px solid var(--border);
+}
+
+.btn-sm {
+  background:transparent; border:1px solid rgba(255,255,255,0.05);
+  color:var(--dim); font-family:'Space Mono',monospace;
+  font-size:8px; letter-spacing:0.2em;
+  padding:5px 12px; cursor:pointer; border-radius:2px;
+  transition:all 0.2s;
+}
+.btn-sm:hover { border-color:rgba(255,255,255,0.12); color:var(--silver); }
+
+/* ─── TOAST ─── */
+.toast {
+  position:fixed; bottom:24px; left:50%;
+  transform:translateX(-50%) translateY(60px);
+  background:var(--surface); border:1px solid var(--complete);
+  color:var(--complete); padding:9px 20px;
+  font-family:'Space Mono',monospace; font-size:10px;
+  letter-spacing:0.15em; border-radius:2px; z-index:999;
+  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  box-shadow:0 0 18px var(--complete-glow); white-space:nowrap;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+@media(max-width:400px) {
+  .node { width:136px; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-left">
+    <h1>SHO <span>OS</span></h1>
+    <div class="header-date" id="headerDate"></div>
+  </div>
+  <div class="countdown-wrap">
+    <div class="countdown-num" id="daysLeft">—</div>
+    <div class="countdown-label">Days to May 1st</div>
+  </div>
+</div>
+
+<!-- XP -->
+<div class="xp-row">
+  <div class="xp-label">TOTAL XP</div>
+  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+  <div class="xp-num" id="xpNum">0 XP</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" id="tab-daily" onclick="switchTab('daily')">
+    ☀️ Daily <span class="tab-badge" id="dailyBadge">0/6</span>
+  </button>
+  <button class="tab" id="tab-tree" onclick="switchTab('tree')">
+    🌳 Skill Tree <span class="tab-badge" id="treeBadge">0</span>
+  </button>
+</div>
+
+<!-- ══ DAILY PANEL ══ -->
+<div class="panel active" id="panel-daily">
+
+  <div class="session-row">
+    <div class="session-label">Session</div>
+    <button class="session-btn morning" id="btnMorning" onclick="setSession('morning')">☀️ Morning</button>
+    <button class="session-btn night"   id="btnNight"   onclick="setSession('night')">🌙 Night</button>
+    <div class="session-time" id="sessionTime"></div>
+  </div>
+
+  <div class="goals" id="goalsList"></div>
+
+  <div class="complete-banner" id="completeBanner">
+    <div class="banner-title">All 6 Done 🔥</div>
+    <div class="banner-sub">Streak extended · Check the skill tree next</div>
+  </div>
+
+  <div class="streak-row">
+    <div class="streak-left">
+      <div class="streak-label">Streak</div>
+      <div class="streak-num" id="streakNum">0</div>
+      <div class="streak-sub">days perfect</div>
+    </div>
+    <div class="streak-right">
+      <div class="prog-label-s">Today</div>
+      <div class="prog-bar-s"><div class="prog-fill-s" id="dailyProgFill" style="width:0%"></div></div>
+      <div class="prog-pct" id="dailyProgPct">0 / 6</div>
+    </div>
+  </div>
+
+  <div class="history-wrap">
+    <div class="history-label">Last 14 Days</div>
+    <div class="dots-row" id="historyDots"></div>
+  </div>
+
+</div>
+
+<!-- ══ TREE PANEL ══ -->
+<div class="panel" id="panel-tree">
+<div class="tree-panel">
+
+  <!-- WINDOW 1 -->
+  <div class="window-block">
+    <div class="window-header">
+      <div class="w-date">APR 15–16</div>
+      <div class="w-title" style="color:var(--urgent)">Before Festival</div>
+      <div class="w-tag" style="color:var(--urgent);border-color:rgba(207,74,60,0.35)">Do Now</div>
+      <div class="w-divider"></div>
+    </div>
+    <div class="node-grid">
+
+      <div class="node track-urgent" id="n-setfest" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🎧</span>
+          <div class="node-name">Festival Set Built</div>
+          <div class="node-desc">Set ready for Friday</div>
+          <div class="node-xp">+100 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-video" id="n-mvedit" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🎬</span>
+          <div class="node-name">MV Edit Started</div>
+          <div class="node-desc">Footage in — rough cut begun</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event" id="n-promo1" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">📱</span>
+          <div class="node-name">TikTok Promo Drop</div>
+          <div class="node-desc">First May 1st push. Raw, personal</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event" id="n-dm20" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">💬</span>
+          <div class="node-name">DM 20 People</div>
+          <div class="node-desc">Personal. Not a blast</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="window-break">↓ Festival Apr 17–19 ↓</div>
+
+  <!-- WINDOW 2 -->
+  <div class="window-block">
+    <div class="window-header">
+      <div class="w-date">APR 17–19</div>
+      <div class="w-title" style="color:var(--festival)">Festival Mode</div>
+      <div class="w-tag" style="color:var(--festival);border-color:var(--festival-dim)">3 Days</div>
+      <div class="w-divider"></div>
+    </div>
+    <div class="node-grid">
+
+      <div class="node track-fest locked" id="n-festset" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🔥</span>
+          <div class="node-name">Set Performed</div>
+          <div class="node-desc">Live rep for May 1st energy</div>
+          <div class="node-xp">+150 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-fest locked" id="n-festcontent" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">📹</span>
+          <div class="node-name">Content Captured</div>
+          <div class="node-desc">B-roll, crowd, set, BTS</div>
+          <div class="node-xp">+100 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-fest locked" id="n-festnet" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🤝</span>
+          <div class="node-name">3 Real Connects</div>
+          <div class="node-desc">Artists, promoters — names logged</div>
+          <div class="node-xp">+100 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-festpromo" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🎯</span>
+          <div class="node-name">May 1st Push Live</div>
+          <div class="node-desc">Post from festival for May 1st</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="window-break">↓ Final Push Apr 20–30 ↓</div>
+
+  <!-- WINDOW 3 -->
+  <div class="window-block">
+    <div class="window-header">
+      <div class="w-date">APR 20–30</div>
+      <div class="w-title" style="color:var(--gold)">Final Push</div>
+      <div class="w-tag" style="color:var(--gold);border-color:var(--gold-dim)">10 Days</div>
+      <div class="w-divider"></div>
+    </div>
+    <div class="node-grid">
+
+      <div class="node track-urgent locked" id="n-setmay1" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🎧</span>
+          <div class="node-name">May 1st Set Built</div>
+          <div class="node-desc">Different energy from festival set</div>
+          <div class="node-xp">+150 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-video locked" id="n-mvdone" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🎬</span>
+          <div class="node-name">Music Video Done</div>
+          <div class="node-desc">Final cut. Ready to drop May 1st</div>
+          <div class="node-xp">+200 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-tiktok3" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">📱</span>
+          <div class="node-name">3x TikTok Posts</div>
+          <div class="node-desc">Primary driver. Keep pushing</div>
+          <div class="node-xp">+125 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-igstory" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">📸</span>
+          <div class="node-name">IG Story Sequence</div>
+          <div class="node-desc">Countdown, lineup, venue teases</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-shotlist" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🎥</span>
+          <div class="node-name">Shot List Built</div>
+          <div class="node-desc">Every angle mapped. Roles assigned</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-may30concept" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">💡</span>
+          <div class="node-name">May 30th Concept</div>
+          <div class="node-desc">Name, vibe, venue — ready to announce May 2nd</div>
+          <div class="node-xp">+100 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-video locked" id="n-pendingshoot" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">📅</span>
+          <div class="node-name">Shoot Rescheduled</div>
+          <div class="node-desc">Date locked with client</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="window-break">↓ May 1st ↓</div>
+
+  <!-- MAY 1ST -->
+  <div class="window-block">
+    <div class="window-header">
+      <div class="w-date">MAY 1ST</div>
+      <div class="w-title" style="color:var(--gold)">Event Night</div>
+      <div class="w-tag" style="color:var(--gold);border-color:var(--gold-dim)">The Night</div>
+      <div class="w-divider"></div>
+    </div>
+    <div class="node-grid">
+
+      <div class="node track-event locked" id="n-loadincontent" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🏭</span>
+          <div class="node-name">Load-In Captured</div>
+          <div class="node-desc">Setup, venue, soundcheck</div>
+          <div class="node-xp">+75 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-perform" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">🔥</span>
+          <div class="node-name">Set Performed</div>
+          <div class="node-desc">You're on the decks. Execute</div>
+          <div class="node-xp">+300 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-nightcontent" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">📹</span>
+          <div class="node-name">Night Documented</div>
+          <div class="node-desc">Crowd, energy, booth, reactions</div>
+          <div class="node-xp">+150 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+      <div class="node track-event locked" id="n-samenight" onclick="completeNode(this)">
+        <div class="node-inner">
+          <span class="node-icon">⚡</span>
+          <div class="node-name">Raw Clip Posted</div>
+          <div class="node-desc">Within 2 hours. No waiting</div>
+          <div class="node-xp">+100 XP</div>
+          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- tree progress -->
+<div class="tree-progress">
+  <div class="tp-item">
+    <div class="tp-label" style="color:var(--gold-dim)">Event</div>
+    <div class="tp-bar"><div class="tp-fill event" id="tpEvent" style="width:0%"></div></div>
+    <div class="tp-count" id="tpEventC">0/10</div>
+  </div>
+  <div class="tp-item">
+    <div class="tp-label" style="color:var(--video-dim)">Video</div>
+    <div class="tp-bar"><div class="tp-fill video" id="tpVideo" style="width:0%"></div></div>
+    <div class="tp-count" id="tpVideoC">0/3</div>
+  </div>
+  <div class="tp-item">
+    <div class="tp-label" style="color:var(--festival-dim)">Festival</div>
+    <div class="tp-bar"><div class="tp-fill festival" id="tpFest" style="width:0%"></div></div>
+    <div class="tp-count" id="tpFestC">0/4</div>
+  </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <button class="btn-sm" onclick="resetDaily()">Reset Today</button>
+  <button class="btn-sm" onclick="resetTree()">Reset Tree</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+// STATE
+// ══════════════════════════════════════
+const KEY = 'sho_combined_v1';
+
+const GOAL_DEFS = [
+  { id:'workout', icon:'💪', name:'Workout',         sub:'Gym — no negotiating',             tag:'Body',    color:'#c8765a' },
+  { id:'house',   icon:'🚪', name:'Leave the House', sub:'Get outside. Change environment',  tag:'Mind',    color:'#7a9bd5' },
+  { id:'room',    icon:'🧹', name:'Clean Room',      sub:'Space reflects headspace',         tag:'Space',   color:'#9b7ac8' },
+  { id:'tiktok',  icon:'📱', name:'Daily TikTok',    sub:'Primary driver for event growth',  tag:'Content', color:'#d4af37' },
+  { id:'saga',    icon:'🎪', name:'Saga Story Post', sub:'IG story for Nu Saga — keep alive',tag:'Event',   color:'#d4af37' },
+  { id:'tracker', icon:'✅', name:'Update Tracker',  sub:'Open it. Check it off. Done',      tag:'OS',      color:'#4caf6e' },
+];
+
+const TREE_NODES = {
+  'n-setfest':       { track:'urgent', xp:100, requires:[] },
+  'n-mvedit':        { track:'video',  xp:75,  requires:[] },
+  'n-promo1':        { track:'event',  xp:75,  requires:[] },
+  'n-dm20':          { track:'event',  xp:75,  requires:[] },
+  'n-festset':       { track:'fest',   xp:150, requires:['n-setfest'] },
+  'n-festcontent':   { track:'fest',   xp:100, requires:['n-setfest'] },
+  'n-festnet':       { track:'fest',   xp:100, requires:['n-setfest'] },
+  'n-festpromo':     { track:'event',  xp:75,  requires:['n-promo1','n-dm20'] },
+  'n-setmay1':       { track:'urgent', xp:150, requires:['n-festset'] },
+  'n-mvdone':        { track:'video',  xp:200, requires:['n-mvedit'] },
+  'n-tiktok3':       { track:'event',  xp:125, requires:['n-festpromo'] },
+  'n-igstory':       { track:'event',  xp:75,  requires:['n-festpromo'] },
+  'n-shotlist':      { track:'event',  xp:75,  requires:['n-festcontent'] },
+  'n-may30concept':  { track:'event',  xp:100, requires:['n-dm20'] },
+  'n-pendingshoot':  { track:'video',  xp:75,  requires:[] },
+  'n-loadincontent': { track:'event',  xp:75,  requires:['n-shotlist'] },
+  'n-perform':       { track:'event',  xp:300, requires:['n-setmay1'] },
+  'n-nightcontent':  { track:'event',  xp:150, requires:['n-loadincontent'] },
+  'n-samenight':     { track:'event',  xp:100, requires:['n-nightcontent','n-perform'] },
+};
+
+const TREE_TRACKS = {
+  event:   ['n-promo1','n-dm20','n-festpromo','n-tiktok3','n-igstory','n-shotlist','n-may30concept','n-loadincontent','n-perform','n-nightcontent','n-samenight'],
+  video:   ['n-mvedit','n-mvdone','n-pendingshoot'],
+  festival:['n-festset','n-festcontent','n-festnet'],
+};
+
+const TOTAL_TREE_XP = Object.values(TREE_NODES).reduce((s,n)=>s+n.xp,0);
+const DAILY_XP_PER = 30;
+const TOTAL_XP = TOTAL_TREE_XP + (GOAL_DEFS.length * DAILY_XP_PER);
+
+function todayKey() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function loadState() {
+  try {
+    const s = localStorage.getItem(KEY);
+    return s ? JSON.parse(s) : { days:{}, tree:[], streak:0, session:'morning' };
+  } catch(e) { return { days:{}, tree:[], streak:0, session:'morning' }; }
+}
+
+function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
+
+let state = loadState();
+let today = todayKey();
+if (!state.days[today]) state.days[today] = { done:[] };
+
+// ══════════════════════════════════════
+// TABS
+// ══════════════════════════════════════
+function switchTab(t) {
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+  document.getElementById('tab-'+t).classList.add('active');
+  document.getElementById('panel-'+t).classList.add('active');
+}
+
+// ══════════════════════════════════════
+// DAILY
+// ══════════════════════════════════════
+function renderGoals() {
+  const list = document.getElementById('goalsList');
+  const todayDone = state.days[today]?.done || [];
+  list.innerHTML = '';
+  GOAL_DEFS.forEach(g => {
+    const done = todayDone.includes(g.id);
+    const div = document.createElement('div');
+    div.className = 'goal' + (done?' done':'');
+    div.onclick = () => toggleGoal(g.id);
+    div.innerHTML = `
+      <div class="goal-check">${done?'✓':''}</div>
+      <div class="goal-icon">${g.icon}</div>
+      <div class="goal-content">
+        <div class="goal-name">${g.name}</div>
+        <div class="goal-sub">${g.sub}</div>
+      </div>
+      <div class="goal-tag" style="color:${g.color};border-color:${g.color}35">${g.tag}</div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function toggleGoal(id) {
+  if (!state.days[today]) state.days[today] = { done:[] };
+  const done = state.days[today].done;
+  const idx = done.indexOf(id);
+  if (idx > -1) { done.splice(idx,1); }
+  else {
+    done.push(id);
+    const g = GOAL_DEFS.find(x=>x.id===id);
+    showToast(`✓ ${g?.name}`);
+  }
+  save();
+  renderGoals(); updateDailyProgress(); checkComplete(); renderHistory(); updateXP();
+}
+
+function updateDailyProgress() {
+  const done = state.days[today]?.done?.length || 0;
+  const total = GOAL_DEFS.length;
+  const pct = Math.round(done/total*100);
+  document.getElementById('dailyProgFill').style.width = pct+'%';
+  document.getElementById('dailyProgPct').textContent = `${done} / ${total}`;
+  document.getElementById('dailyBadge').textContent = `${done}/${total}`;
+}
+
+function checkComplete() {
+  const done = state.days[today]?.done?.length || 0;
+  const banner = document.getElementById('completeBanner');
+  if (done === GOAL_DEFS.length) {
+    banner.classList.add('show');
+    calcStreak();
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+function calcStreak() {
+  let streak = 0;
+  const keys = Object.keys(state.days).sort().reverse();
+  for (const k of keys) {
+    if ((state.days[k]?.done?.length||0) === GOAL_DEFS.length) streak++;
+    else break;
+  }
+  state.streak = streak; save();
+  document.getElementById('streakNum').textContent = streak;
+}
+
+function renderHistory() {
+  const container = document.getElementById('historyDots');
+  container.innerHTML = '';
+  for (let i=13; i>=0; i--) {
+    const d = new Date(); d.setDate(d.getDate()-i);
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const done = state.days[k]?.done?.length || 0;
+    const total = GOAL_DEFS.length;
+    const isToday = k === today;
+    const dot = document.createElement('div');
+    dot.className = 'day-dot'+(done===total?' full':done>0?' partial':'')+(isToday?' today':'');
+    dot.textContent = String(d.getDate()).padStart(2,'0');
+    dot.title = `${k}: ${done}/${total}`;
+    container.appendChild(dot);
+  }
+}
+
+function setSession(s) {
+  state.session = s; save();
+  document.getElementById('btnMorning').classList.toggle('active', s==='morning');
+  document.getElementById('btnNight').classList.toggle('active', s==='night');
+}
+
+// ══════════════════════════════════════
+// TREE
+// ══════════════════════════════════════
+function completeNode(el) {
+  if (el.classList.contains('locked') || el.classList.contains('complete')) return;
+  el.classList.add('complete');
+  const id = el.id;
+  if (!state.tree.includes(id)) { state.tree.push(id); save(); }
+  updateTreeLocks(); updateTreeProgress(); updateXP();
+  showToast(`✓ +${TREE_NODES[id]?.xp||0} XP`);
+  const done = state.tree.length;
+  document.getElementById('treeBadge').textContent = done;
+}
+
+function updateTreeLocks() {
+  Object.entries(TREE_NODES).forEach(([id, cfg]) => {
+    const el = document.getElementById(id);
+    if (!el || el.classList.contains('complete')) return;
+    const met = cfg.requires.every(r => state.tree.includes(r));
+    el.classList.toggle('locked', !met);
+  });
+}
+
+function updateTreeProgress() {
+  Object.entries(TREE_TRACKS).forEach(([track, ids]) => {
+    const done = ids.filter(id => state.tree.includes(id)).length;
+    const total = ids.length;
+    const pct = Math.round(done/total*100);
+    const cap = track.charAt(0).toUpperCase()+track.slice(1);
+    const fill = document.getElementById('tp'+cap);
+    const count = document.getElementById('tp'+cap+'C');
+    if (fill) fill.style.width = pct+'%';
+    if (count) count.textContent = `${done}/${total}`;
+  });
+  document.getElementById('treeBadge').textContent = state.tree.length;
+}
+
+// ══════════════════════════════════════
+// XP (combined daily + tree)
+// ══════════════════════════════════════
+function updateXP() {
+  const treeXP = state.tree.reduce((s,id)=>s+(TREE_NODES[id]?.xp||0),0);
+  // count all daily completions across all days
+  const dailyXP = Object.values(state.days).reduce((s,d)=>s+((d.done?.length||0)*DAILY_XP_PER),0);
+  const total = treeXP + dailyXP;
+  const pct = Math.min(100, Math.round(total/TOTAL_XP*100));
+  document.getElementById('xpFill').style.width = pct+'%';
+  document.getElementById('xpNum').textContent = total.toLocaleString()+' XP';
+}
+
+// ══════════════════════════════════════
+// COUNTDOWN
+// ══════════════════════════════════════
+function updateCountdown() {
+  const now = new Date();
+  const may1 = new Date('2025-05-01T00:00:00');
+  const diff = Math.ceil((may1-now)/(1000*60*60*24));
+  document.getElementById('daysLeft').textContent = Math.max(0,diff);
+}
+
+// ══════════════════════════════════════
+// RESETS
+// ══════════════════════════════════════
+function resetDaily() {
+  if (!confirm('Clear today\'s daily goals?')) return;
+  state.days[today] = { done:[] }; save();
+  renderGoals(); updateDailyProgress(); checkComplete(); renderHistory(); updateXP();
+}
+
+function resetTree() {
+  if (!confirm('Reset entire skill tree progress?')) return;
+  state.tree = []; save();
+  document.querySelectorAll('.node').forEach(n => {
+    n.classList.remove('complete');
+  });
+  updateTreeLocks(); updateTreeProgress(); updateXP();
+}
+
+// ══════════════════════════════════════
+// TOAST
+// ══════════════════════════════════════
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove('show'), 2000);
+}
+
+// ══════════════════════════════════════
+// INIT
+// ══════════════════════════════════════
+function init() {
+  // date
+  const d = new Date();
+  document.getElementById('headerDate').textContent =
+    d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
+
+  // session auto-detect
+  const hour = d.getHours();
+  setSession(hour < 14 ? 'morning' : 'night');
+  document.getElementById('sessionTime').textContent =
+    d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+
+  // restore tree
+  state.tree.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('complete');
+  });
+
+  updateTreeLocks();
+  updateTreeProgress();
+  renderGoals();
+  updateDailyProgress();
+  checkComplete();
+  renderHistory();
+  calcStreak();
+  updateXP();
+  updateCountdown();
+}
+
+init();
+</script>
+</body>
+</html>
