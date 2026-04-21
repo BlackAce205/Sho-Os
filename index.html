@@ -2,1115 +2,1313 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SHO — OS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>SHO OS</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-  --bg: #060608;
-  --surface: #0d0d11;
-  --border: rgba(255,255,255,0.07);
-  --dim: #3a3a50;
-  --silver: #8888a0;
-  --white: #eeeeee;
-
-  --gold: #d4af37;
-  --gold-glow: rgba(212,175,55,0.16);
-  --gold-dim: rgba(212,175,55,0.4);
-
-  --video: #5b9bd5;
-  --video-glow: rgba(91,155,213,0.15);
-  --video-dim: rgba(91,155,213,0.4);
-
-  --festival: #c8765a;
-  --festival-glow: rgba(200,118,90,0.15);
-  --festival-dim: rgba(200,118,90,0.4);
-
-  --complete: #4caf6e;
-  --complete-glow: rgba(76,175,110,0.18);
-
-  --urgent: #cf4a3c;
-  --urgent-glow: rgba(207,74,60,0.15);
+  --bg:#050507;--surface:#0c0c10;--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+  --dim:#383848;--silver:#7878a0;--white:#eeeeee;
+  --gold:#d4af37;--gold-glow:rgba(212,175,55,0.14);--gold-dim:rgba(212,175,55,0.45);
+  --blue:#5b9bd5;--blue-glow:rgba(91,155,213,0.14);
+  --orange:#c8765a;--orange-glow:rgba(200,118,90,0.14);
+  --green:#4caf6e;--green-glow:rgba(76,175,110,0.16);
+  --red:#cf4a3c;--red-glow:rgba(207,74,60,0.14);
+  --purple:#9b7ac8;
+  --chest:#e05555;--back:#4caf6e;--shoulders:#e07833;--arms:#d4af37;--legs:#5b9bd5;--core:#9b7ac8;--cardio:#e8956a;
+  --nav-h:58px;
 }
-
-* { margin:0; padding:0; box-sizing:border-box; }
-
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-body::before {
-  content:'';
-  position:fixed; inset:0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(212,175,55,0.04) 0%, transparent 55%);
-  pointer-events:none; z-index:0;
-}
-
-/* ─── HEADER ─── */
-.header {
-  position:relative; z-index:10;
-  padding: 28px 24px 18px;
-  border-bottom: 1px solid var(--border);
-  display:flex; align-items:flex-end; justify-content:space-between;
-}
-
-.header-left h1 {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:44px; letter-spacing:0.08em; line-height:1;
-}
-
-.header-left h1 span { color:var(--dim); }
-
-.header-date {
-  font-family:'Space Mono',monospace;
-  font-size:10px; letter-spacing:0.2em;
-  color:var(--dim); margin-top:5px;
-}
-
-.countdown-wrap { text-align:right; }
-
-.countdown-num {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:38px; letter-spacing:0.08em;
-  color:var(--gold); line-height:1;
-}
-
-.countdown-label {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.2em; color:var(--dim);
-}
-
-/* ─── XP ROW ─── */
-.xp-row {
-  position:relative; z-index:5;
-  padding: 12px 24px;
-  border-bottom: 1px solid var(--border);
-  display:flex; align-items:center; gap:12px;
-}
-
-.xp-label {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.25em; color:var(--dim); flex-shrink:0;
-}
-
-.xp-track {
-  flex:1; height:3px;
-  background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden;
-}
-
-.xp-fill {
-  height:100%;
-  background: linear-gradient(90deg, var(--gold), var(--video));
-  border-radius:2px;
-  transition: width 0.7s cubic-bezier(0.4,0,0.2,1);
-}
-
-.xp-num {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:18px; letter-spacing:0.1em; flex-shrink:0;
-}
-
-/* ─── TABS ─── */
-.tabs {
-  position:relative; z-index:5;
-  display:flex; border-bottom: 1px solid var(--border);
-}
-
-.tab {
-  flex:1; padding:14px 0;
-  text-align:center;
-  font-family:'Space Mono',monospace;
-  font-size:10px; letter-spacing:0.25em;
-  text-transform:uppercase; color:var(--dim);
-  cursor:pointer; border:none; background:transparent;
-  border-bottom:2px solid transparent;
-  transition:all 0.2s; position:relative;
-}
-
-.tab.active {
-  color:var(--white);
-  border-bottom-color:var(--gold);
-}
-
-.tab-badge {
-  display:inline-block;
-  background:var(--gold-dim);
-  color:var(--gold);
-  font-size:9px; padding:1px 5px;
-  border-radius:1px; margin-left:5px;
-  font-family:'Space Mono',monospace;
-}
-
-/* ─── PANELS ─── */
-.panel { display:none; }
-.panel.active { display:block; }
-
-/* ══════════════════════════════
-   DAILY PANEL
-══════════════════════════════ */
-
-.session-row {
-  padding: 12px 24px;
-  border-bottom: 1px solid var(--border);
-  display:flex; gap:8px; align-items:center;
-}
-
-.session-label {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.25em; color:var(--dim); flex-shrink:0;
-}
-
-.session-btn {
-  padding:4px 12px; border-radius:2px;
-  border:1px solid var(--border);
-  background:transparent; cursor:pointer;
-  font-family:'Space Mono',monospace;
-  font-size:10px; letter-spacing:0.1em;
-  color:var(--dim); transition:all 0.2s;
-}
-
-.session-btn.active.morning { background:rgba(232,149,106,0.1); border-color:rgba(232,149,106,0.4); color:#e8956a; }
-.session-btn.active.night   { background:rgba(122,155,213,0.1); border-color:rgba(122,155,213,0.4); color:#7a9bd5; }
-
-.session-time { margin-left:auto; font-family:'Space Mono',monospace; font-size:10px; color:var(--dim); }
-
-.goals { padding:18px 24px; display:flex; flex-direction:column; gap:8px; }
-
-.goal {
-  background:var(--surface); border:1px solid var(--border);
-  border-radius:3px; padding:14px 16px;
-  display:flex; align-items:center; gap:14px;
-  cursor:pointer; transition:all 0.25s ease;
-  user-select:none; position:relative; overflow:hidden;
-}
-
-.goal::before {
-  content:''; position:absolute; left:0; top:0; bottom:0;
-  width:3px; background:var(--border); transition:background 0.3s;
-}
-
-.goal:hover { border-color:rgba(255,255,255,0.12); }
-
-.goal.done { background:rgba(76,175,110,0.05); border-color:rgba(76,175,110,0.2); }
-.goal.done::before { background:var(--complete); }
-
-.goal-check {
-  width:20px; height:20px; flex-shrink:0;
-  border:1px solid var(--dim); border-radius:2px;
-  display:flex; align-items:center; justify-content:center;
-  font-size:11px; transition:all 0.25s;
-}
-
-.goal.done .goal-check { background:var(--complete); border-color:var(--complete); color:#fff; }
-
-.goal-icon { font-size:18px; flex-shrink:0; }
-
-.goal-content { flex:1; }
-
-.goal-name {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:16px; letter-spacing:0.1em; line-height:1;
-  transition:color 0.3s;
-}
-
-.goal.done .goal-name { color:var(--silver); }
-
-.goal-sub {
-  font-size:10px; color:var(--dim);
-  font-family:'Space Mono',monospace;
-  margin-top:2px; letter-spacing:0.04em; line-height:1.4;
-}
-
-.goal-tag {
-  font-family:'Space Mono',monospace; font-size:8px;
-  letter-spacing:0.15em; padding:2px 7px;
-  border-radius:1px; border:1px solid; flex-shrink:0;
-}
-
-/* streak */
-.streak-row {
-  padding: 14px 24px;
-  border-top: 1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-}
-
-.streak-left { display:flex; flex-direction:column; gap:2px; }
-
-.streak-label {
-  font-family:'Space Mono',monospace;
-  font-size:9px; letter-spacing:0.25em; color:var(--dim);
-}
-
-.streak-num {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:32px; letter-spacing:0.1em; line-height:1;
-  color:var(--gold);
-}
-
-.streak-sub { font-family:'Space Mono',monospace; font-size:9px; color:var(--dim); }
-
-.streak-right { display:flex; flex-direction:column; align-items:flex-end; gap:5px; }
-
-.prog-label-s { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--dim); }
-
-.prog-bar-s { width:110px; height:3px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
-
-.prog-fill-s {
-  height:100%;
-  background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-  border-radius:2px; transition:width 0.6s ease;
-}
-
-.prog-pct { font-family:'Space Mono',monospace; font-size:9px; color:var(--silver); }
-
-/* history dots */
-.history-wrap { padding:16px 24px 8px; }
-
-.history-label {
-  font-family:'Space Mono',monospace; font-size:9px;
-  letter-spacing:0.25em; color:var(--dim); margin-bottom:10px;
-}
-
-.dots-row { display:flex; gap:5px; flex-wrap:wrap; }
-
-.day-dot {
-  width:26px; height:26px; border-radius:2px;
-  display:flex; align-items:center; justify-content:center;
-  font-family:'Space Mono',monospace; font-size:8px;
-  border:1px solid var(--border); color:var(--dim);
-  background:var(--surface);
-}
-
-.day-dot.full  { background:rgba(76,175,110,0.1); border-color:rgba(76,175,110,0.3); color:var(--complete); }
-.day-dot.partial { background:rgba(212,175,55,0.07); border-color:rgba(212,175,55,0.2); color:var(--gold-dim); }
-.day-dot.today { border-color:var(--silver); color:var(--white); }
-
-/* complete banner */
-.complete-banner {
-  margin:0 24px 16px;
-  padding:16px; background:rgba(76,175,110,0.07);
-  border:1px solid rgba(76,175,110,0.3); border-radius:3px;
-  text-align:center; display:none;
-}
-.complete-banner.show { display:block; animation:fadeUp 0.4s ease; }
-.banner-title { font-family:'Bebas Neue',sans-serif; font-size:26px; letter-spacing:0.15em; color:var(--complete); }
-.banner-sub { font-family:'Space Mono',monospace; font-size:9px; color:var(--silver); letter-spacing:0.1em; margin-top:3px; }
-
-/* ══════════════════════════════
-   TREE PANEL
-══════════════════════════════ */
-
-.tree-panel { padding:24px 24px 40px; }
-
-.window-block { margin-bottom:40px; }
-
-.window-header {
-  display:flex; align-items:center; gap:12px;
-  margin-bottom:16px; flex-wrap:wrap;
-}
-
-.w-date {
-  font-family:'Space Mono',monospace; font-size:9px;
-  letter-spacing:0.3em; color:var(--dim); flex-shrink:0;
-}
-
-.w-title {
-  font-family:'Bebas Neue',sans-serif;
-  font-size:20px; letter-spacing:0.1em; line-height:1;
-}
-
-.w-divider { flex:1; height:1px; background:var(--border); }
-
-.w-tag {
-  font-family:'Space Mono',monospace; font-size:8px;
-  letter-spacing:0.2em; padding:3px 8px;
-  border:1px solid; border-radius:1px; flex-shrink:0;
-}
-
-.node-grid { display:flex; gap:8px; flex-wrap:wrap; }
-
-/* NODE */
-.node {
-  width:148px; flex-shrink:0;
-  cursor:pointer; transition:transform 0.2s ease;
-}
-
-.node:hover:not(.locked) { transform:translateY(-3px); }
-
-.node-inner {
-  background:var(--surface); border:1px solid var(--border);
-  padding:12px 13px 11px; border-radius:3px;
-  transition:all 0.25s ease; position:relative; overflow:hidden;
-  height:100%;
-}
-
-.node.track-event .node-inner  { border-top:2px solid var(--gold-dim); }
-.node.track-video .node-inner  { border-top:2px solid var(--video-dim); }
-.node.track-fest  .node-inner  { border-top:2px solid var(--festival-dim); }
-.node.track-urgent .node-inner { border-top:2px solid rgba(207,74,60,0.55); }
-
-.node.track-event:not(.locked):hover .node-inner  { border-color:var(--gold);    box-shadow:0 0 16px var(--gold-glow),    0 6px 18px rgba(0,0,0,0.4); }
-.node.track-video:not(.locked):hover .node-inner  { border-color:var(--video);   box-shadow:0 0 16px var(--video-glow),   0 6px 18px rgba(0,0,0,0.4); }
-.node.track-fest:not(.locked):hover  .node-inner  { border-color:var(--festival);box-shadow:0 0 16px var(--festival-glow),0 6px 18px rgba(0,0,0,0.4); }
-.node.track-urgent:not(.locked):hover .node-inner { border-color:var(--urgent);  box-shadow:0 0 16px var(--urgent-glow),  0 6px 18px rgba(0,0,0,0.4); }
-
-.node.complete .node-inner {
-  border-color:var(--complete) !important;
-  background:rgba(76,175,110,0.05);
-  box-shadow:0 0 12px var(--complete-glow);
-}
-
-.node.locked { cursor:default; pointer-events:none; }
-.node.locked .node-inner { background:rgba(5,5,7,0.9); border-color:rgba(255,255,255,0.03) !important; }
-
-.node-icon { font-size:16px; margin-bottom:6px; display:block; transition:filter 0.3s; }
-.node.locked .node-icon { filter:grayscale(1); opacity:0.15; }
-
-.node-name {
-  font-family:'Bebas Neue',sans-serif; font-size:13px;
-  letter-spacing:0.1em; line-height:1.1; margin-bottom:3px;
-  color:var(--white); transition:color 0.3s;
-}
-.node.locked .node-name { color:#181820; }
-
-.node-desc { font-size:9px; color:var(--dim); line-height:1.5; font-family:'Space Mono',monospace; }
-.node.locked .node-desc { color:#181820; }
-
-.node-xp {
-  display:inline-block; margin-top:7px;
-  font-family:'Space Mono',monospace; font-size:8px;
-  letter-spacing:0.1em; padding:2px 6px;
-  border:1px solid var(--border); border-radius:1px;
-}
-.node.track-event  .node-xp { color:var(--gold-dim);     border-color:rgba(212,175,55,0.12); }
-.node.track-video  .node-xp { color:var(--video-dim);    border-color:rgba(91,155,213,0.12); }
-.node.track-fest   .node-xp { color:var(--festival-dim); border-color:rgba(200,118,90,0.12); }
-.node.track-urgent .node-xp { color:rgba(207,74,60,0.6); border-color:rgba(207,74,60,0.12); }
-.node.locked       .node-xp { color:#181820; border-color:rgba(255,255,255,0.02); }
-
-.node-badge { position:absolute; top:9px; right:9px; font-size:11px; display:none; }
-.node.complete .node-badge.done      { display:block; color:var(--complete); }
-.node.locked   .node-badge.lock      { display:block; opacity:0.18; }
-
-.node.track-urgent:not(.complete):not(.locked) .node-inner::after {
-  content:''; position:absolute; top:8px; right:8px;
-  width:5px; height:5px; border-radius:50%;
-  background:var(--urgent); animation:pulse 1.8s infinite;
-}
-@keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.6)} }
-
-.window-break {
-  display:flex; align-items:center; gap:10px;
-  margin: -16px 0 28px; color:var(--dim);
-  font-family:'Space Mono',monospace; font-size:9px;
-  letter-spacing:0.2em;
-}
-.window-break::before, .window-break::after { content:''; flex:1; height:1px; background:var(--border); }
-
-/* tree progress */
-.tree-progress {
-  border-top:1px solid var(--border);
-  padding:16px 24px 8px;
-  display:flex; gap:20px; flex-wrap:wrap;
-}
-
-.tp-item { display:flex; flex-direction:column; gap:4px; }
-
-.tp-label {
-  font-family:'Space Mono',monospace; font-size:8px;
-  letter-spacing:0.25em; text-transform:uppercase;
-}
-
-.tp-bar { width:90px; height:2px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; }
-.tp-fill { height:100%; border-radius:2px; transition:width 0.7s ease; }
-.tp-fill.event    { background:var(--gold); }
-.tp-fill.video    { background:var(--video); }
-.tp-fill.festival { background:var(--festival); }
-
-.tp-count { font-family:'Space Mono',monospace; font-size:8px; color:var(--dim); }
-
-/* ─── FOOTER ─── */
-.footer {
-  position:relative; z-index:5;
-  padding:12px 24px 36px;
-  display:flex; justify-content:space-between;
-  border-top:1px solid var(--border);
-}
-
-.btn-sm {
-  background:transparent; border:1px solid rgba(255,255,255,0.05);
-  color:var(--dim); font-family:'Space Mono',monospace;
-  font-size:8px; letter-spacing:0.2em;
-  padding:5px 12px; cursor:pointer; border-radius:2px;
-  transition:all 0.2s;
-}
-.btn-sm:hover { border-color:rgba(255,255,255,0.12); color:var(--silver); }
-
-/* ─── TOAST ─── */
-.toast {
-  position:fixed; bottom:24px; left:50%;
-  transform:translateX(-50%) translateY(60px);
-  background:var(--surface); border:1px solid var(--complete);
-  color:var(--complete); padding:9px 20px;
-  font-family:'Space Mono',monospace; font-size:10px;
-  letter-spacing:0.15em; border-radius:2px; z-index:999;
-  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-  box-shadow:0 0 18px var(--complete-glow); white-space:nowrap;
-}
-.toast.show { transform:translateX(-50%) translateY(0); }
-
-@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-@media(max-width:400px) {
-  .node { width:136px; }
-}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{background:var(--bg);color:var(--white);font-family:'DM Sans',sans-serif;min-height:100vh;max-width:540px;margin:0 auto;overflow-x:hidden}
+
+/* ── NAV ── */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:540px;height:var(--nav-h);background:rgba(5,5,7,0.97);border-top:1px solid var(--border);display:flex;z-index:100;backdrop-filter:blur(12px)}
+.nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;background:none;border:none;cursor:pointer;padding:6px 4px;position:relative;transition:all 0.2s}
+.nav-btn::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--gold);transition:width 0.3s;border-radius:0 0 2px 2px}
+.nav-btn.active::before{width:22px}
+.nav-icon{font-size:17px;transition:transform 0.2s}
+.nav-btn.active .nav-icon{transform:scale(1.1)}
+.nav-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.1em;color:var(--dim);transition:color 0.2s;white-space:nowrap}
+.nav-btn.active .nav-label{color:var(--gold)}
+
+/* ── HAMBURGER MENU ── */
+.hamburger-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:150;display:none;animation:fadeIn 0.2s ease}
+.hamburger-overlay.open{display:block}
+.hamburger-menu{position:fixed;right:0;top:0;bottom:var(--nav-h);width:260px;background:#0a0a0e;border-left:1px solid var(--border2);z-index:151;padding:28px 20px;display:none;flex-direction:column;gap:6px;animation:slideInRight 0.25s ease}
+.hamburger-menu.open{display:flex}
+@keyframes slideInRight{from{transform:translateX(100%)}to{transform:translateX(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.hm-title{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.3em;color:var(--dim);text-transform:uppercase;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.hm-btn{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:3px;cursor:pointer;transition:all 0.2s;text-align:left}
+.hm-btn:hover{border-color:var(--border2)}
+.hm-btn.active{border-color:var(--gold);background:var(--gold-glow)}
+.hm-icon{font-size:20px;flex-shrink:0}
+.hm-content{flex:1}
+.hm-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;line-height:1}
+.hm-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:2px}
+.hm-btn.active .hm-name{color:var(--gold)}
+.hm-btn.active .hm-sub{color:var(--gold-dim)}
+
+/* ── PANELS ── */
+.panel{display:none;padding-bottom:calc(var(--nav-h)+24px);min-height:100vh;animation:fadeUp 0.25s ease}
+.panel.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SHARED ── */
+.ph{padding:24px 20px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-end;justify-content:space-between}
+.pt{font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:0.08em;line-height:1}
+.pt span{color:var(--dim)}
+.ps{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.2em;color:var(--dim);margin-top:4px}
+.sl{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.28em;color:var(--dim);text-transform:uppercase;padding:0 20px;margin-bottom:8px}
+.card{margin:0 20px 10px;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:14px}
+.inp{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:2px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;padding:8px 12px;outline:none;transition:border-color 0.2s}
+.inp:focus{border-color:var(--border2)}
+.inp::placeholder{color:var(--dim)}
+.sel{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:2px;color:var(--white);font-family:'Space Mono',monospace;font-size:10px;padding:8px 10px;outline:none;cursor:pointer}
+.sel option{background:#0d0d11}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--silver);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.15em;padding:6px 14px;cursor:pointer;border-radius:2px;transition:all 0.2s}
+.btn-ghost:hover{border-color:var(--border2);color:var(--white)}
+.btn-gold{background:var(--gold);border:none;color:#000;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:0.15em;padding:8px 18px;cursor:pointer;border-radius:2px;transition:opacity 0.2s}
+.btn-gold:hover{opacity:0.85}
+.spacer{height:18px}
+.divider{height:1px;background:var(--border);margin:14px 20px}
+.form-row{display:flex;gap:8px}
+.mini-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.mini-fill{height:100%;border-radius:2px;transition:width 0.7s ease}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:calc(var(--nav-h)+14px);left:50%;transform:translateX(-50%) translateY(60px);background:var(--surface);border:1px solid var(--green);color:var(--green);padding:9px 20px;font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;border-radius:2px;z-index:999;transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1);box-shadow:0 0 16px var(--green-glow);white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:200;display:none;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#0d0d11;border:1px solid var(--border2);border-radius:6px 6px 0 0;width:100%;max-width:540px;padding:20px 20px 40px;animation:slideUp 0.3s ease;position:relative;max-height:85vh;overflow-y:auto}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.1em;margin-bottom:14px}
+.modal-close{position:absolute;top:14px;right:16px;background:transparent;border:none;color:var(--silver);font-size:20px;cursor:pointer}
+.modal-body{display:flex;flex-direction:column;gap:10px}
+
+/* ════════ DAILY ════════ */
+.momentum-wrap{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px}
+.mom-score{font-family:'Bebas Neue',sans-serif;font-size:54px;letter-spacing:0.05em;line-height:1;color:var(--gold);flex-shrink:0}
+.mom-right{flex:1}
+.mom-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.25em;color:var(--dim);margin-bottom:5px}
+.mom-bar{height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-bottom:7px}
+.mom-fill{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width 0.8s ease}
+.mom-stats{display:flex;gap:14px}
+.ms-val{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.08em;line-height:1}
+.ms-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--dim)}
+
+/* clean mind */
+.cm-wrap{margin:12px 20px 0;background:rgba(76,175,110,0.05);border:1px solid rgba(76,175,110,0.2);border-radius:3px;padding:12px 14px}
+.cm-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.cm-streak{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--green);line-height:1;margin-left:auto}
+.cm-label{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em;color:var(--green)}
+.cm-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)}
+.cm-days{display:flex;gap:5px;margin-bottom:10px}
+.cm-dot{width:32px;height:32px;border-radius:2px;border:1px solid var(--border);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:7px;color:var(--dim);gap:2px}
+.cm-dot.clean{border-color:rgba(76,175,110,0.4);background:rgba(76,175,110,0.1);color:var(--green)}
+.cm-dot.broke{border-color:rgba(207,74,60,0.4);background:rgba(207,74,60,0.08);color:var(--red)}
+.cm-dot.today{border-color:var(--silver)}
+.cm-dot-lbl{font-size:6px}
+.cm-btns{display:flex;gap:6px}
+.cm-yes{flex:1;padding:8px;background:rgba(76,175,110,0.1);border:1px solid rgba(76,175,110,0.35);color:var(--green);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;cursor:pointer;border-radius:2px;transition:all 0.2s}
+.cm-no{flex:1;padding:8px;background:rgba(207,74,60,0.08);border:1px solid rgba(207,74,60,0.25);color:var(--red);font-family:'Space Mono',monospace;font-size:10px;letter-spacing:0.15em;cursor:pointer;border-radius:2px;transition:all 0.2s}
+
+/* habits */
+.habits-wrap{padding:0 20px;display:flex;flex-direction:column;gap:7px}
+.habit{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px 14px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all 0.2s;user-select:none;position:relative;overflow:hidden}
+.habit::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--border);transition:background 0.3s}
+.habit.done{background:rgba(76,175,110,0.04);border-color:rgba(76,175,110,0.18)}
+.habit.done::before{background:var(--green)}
+.hcheck{width:19px;height:19px;border:1px solid var(--dim);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:10px;flex-shrink:0;transition:all 0.2s}
+.habit.done .hcheck{background:var(--green);border-color:var(--green);color:#fff}
+.hicon{font-size:16px;flex-shrink:0}
+.hcontent{flex:1}
+.hname{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.1em;line-height:1;transition:color 0.2s}
+.habit.done .hname{color:var(--silver)}
+.hsub{font-size:9px;color:var(--dim);font-family:'Space Mono',monospace;margin-top:2px;letter-spacing:0.03em}
+.htag{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.1em;padding:2px 6px;border-radius:1px;border:1px solid;flex-shrink:0}
+
+/* win */
+.win-wrap{margin:0 20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.win-label{padding:8px 14px 4px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--gold-dim)}
+.win-inp{width:100%;background:transparent;border:none;outline:none;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:0 14px 10px;resize:none;line-height:1.5}
+
+/* history */
+.history-wrap{padding:12px 20px 0}
+.history-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.25em;color:var(--dim);margin-bottom:7px}
+.dots-row{display:flex;gap:4px;flex-wrap:wrap}
+.day-dot{width:24px;height:24px;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:8px;border:1px solid var(--border);color:var(--dim);background:var(--surface)}
+.day-dot.full{background:rgba(76,175,110,0.1);border-color:rgba(76,175,110,0.3);color:var(--green)}
+.day-dot.partial{background:rgba(212,175,55,0.07);border-color:rgba(212,175,55,0.2);color:var(--gold-dim)}
+.day-dot.today{border-color:var(--silver);color:var(--white)}
+
+.streak-row{padding:12px 20px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--border)}
+.streak-num{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.1em;color:var(--gold);line-height:1}
+.streak-lbl{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);letter-spacing:0.1em}
+
+/* ════════ TIME BLOCK ════════ */
+.tb-wrap{padding:16px 20px;display:flex;flex-direction:column;gap:6px}
+.tb-row{display:flex;gap:8px;align-items:stretch}
+.tb-time{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);width:64px;flex-shrink:0;padding-top:3px}
+.tb-block{flex:1;padding:10px 12px;border-radius:2px;border-left:3px solid}
+.tb-name{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;line-height:1}
+.tb-tasks{font-family:'Space Mono',monospace;font-size:8px;color:var(--silver);margin-top:3px;line-height:1.5}
+.tb-morning{border-color:#e8956a;background:rgba(232,149,106,0.06)}
+.tb-build{border-color:var(--blue);background:rgba(91,155,213,0.06)}
+.tb-admin{border-color:var(--gold);background:rgba(212,175,55,0.06)}
+.tb-execute{border-color:var(--orange);background:rgba(200,118,90,0.06)}
+.tb-gym{border-color:var(--green);background:rgba(76,175,110,0.06)}
+.tb-creative{border-color:var(--purple);background:rgba(155,122,200,0.06)}
+
+/* ════════ MISSIONS ════════ */
+.tree-wrap{padding:18px 20px 0}
+.tree-window{margin-bottom:32px}
+.twh{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.tw-date{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.25em;color:var(--dim);flex-shrink:0}
+.tw-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.1em;line-height:1}
+.tw-div{flex:1;height:1px;background:var(--border)}
+.tw-tag{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;padding:2px 8px;border:1px solid;border-radius:1px;flex-shrink:0}
+.node-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.node{cursor:pointer;transition:transform 0.2s}
+.node:hover:not(.locked){transform:translateY(-2px)}
+.node-inner{background:var(--surface);border:1px solid var(--border);padding:10px 10px 9px;border-radius:3px;transition:all 0.25s;position:relative;overflow:hidden;height:100%}
+.node.track-event .node-inner{border-top:2px solid rgba(212,175,55,0.4)}
+.node.track-video .node-inner{border-top:2px solid rgba(91,155,213,0.4)}
+.node.track-fest  .node-inner{border-top:2px solid rgba(200,118,90,0.4)}
+.node.track-urgent .node-inner{border-top:2px solid rgba(207,74,60,0.55)}
+.node.track-build .node-inner{border-top:2px solid rgba(155,122,200,0.4)}
+.node.track-project .node-inner{border-top:2px solid rgba(76,175,110,0.4)}
+.node.track-event:not(.locked):hover .node-inner{border-color:var(--gold);box-shadow:0 0 12px var(--gold-glow),0 4px 14px rgba(0,0,0,0.4)}
+.node.track-video:not(.locked):hover .node-inner{border-color:var(--blue);box-shadow:0 0 12px var(--blue-glow),0 4px 14px rgba(0,0,0,0.4)}
+.node.track-fest:not(.locked):hover  .node-inner{border-color:var(--orange);box-shadow:0 0 12px var(--orange-glow),0 4px 14px rgba(0,0,0,0.4)}
+.node.track-urgent:not(.locked):hover .node-inner{border-color:var(--red);box-shadow:0 0 12px var(--red-glow),0 4px 14px rgba(0,0,0,0.4)}
+.node.track-build:not(.locked):hover .node-inner{border-color:var(--purple);box-shadow:0 0 12px rgba(155,122,200,0.2),0 4px 14px rgba(0,0,0,0.4)}
+.node.track-project:not(.locked):hover .node-inner{border-color:var(--green);box-shadow:0 0 12px var(--green-glow),0 4px 14px rgba(0,0,0,0.4)}
+.node.complete .node-inner{border-color:var(--green)!important;background:rgba(76,175,110,0.04);box-shadow:0 0 10px var(--green-glow)}
+.node.locked{cursor:default;pointer-events:none}
+.node.locked .node-inner{background:rgba(4,4,6,0.95);border-color:rgba(255,255,255,0.03)!important}
+.node-icon{font-size:14px;margin-bottom:5px;display:block}
+.node.locked .node-icon{filter:grayscale(1);opacity:0.12}
+.node-name{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.08em;line-height:1.1;margin-bottom:2px;transition:color 0.2s}
+.node.locked .node-name{color:#141420}
+.node-desc{font-size:8px;color:var(--dim);line-height:1.4;font-family:'Space Mono',monospace}
+.node.locked .node-desc{color:#141420}
+.node-xp{display:inline-block;margin-top:5px;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.1em;padding:1px 5px;border:1px solid var(--border);border-radius:1px}
+.node.track-event .node-xp{color:var(--gold-dim);border-color:rgba(212,175,55,0.12)}
+.node.track-video .node-xp{color:rgba(91,155,213,0.5);border-color:rgba(91,155,213,0.12)}
+.node.track-fest  .node-xp{color:rgba(200,118,90,0.5);border-color:rgba(200,118,90,0.12)}
+.node.track-urgent .node-xp{color:rgba(207,74,60,0.6);border-color:rgba(207,74,60,0.12)}
+.node.track-build .node-xp{color:rgba(155,122,200,0.6);border-color:rgba(155,122,200,0.12)}
+.node.track-project .node-xp{color:rgba(76,175,110,0.5);border-color:rgba(76,175,110,0.12)}
+.node.locked .node-xp{color:#141420;border-color:rgba(255,255,255,0.02)}
+.node-badge{position:absolute;top:7px;right:7px;font-size:9px;display:none}
+.node.complete .node-badge.done{display:block;color:var(--green)}
+.node.locked .node-badge.lock{display:block;opacity:0.15}
+.node.track-urgent:not(.complete):not(.locked) .node-inner::after{content:'';position:absolute;top:6px;right:6px;width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.6)}}
+.tree-connector{display:flex;align-items:center;gap:10px;margin:-6px 0 18px;color:var(--dim);font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.15em}
+.tree-connector::before,.tree-connector::after{content:'';flex:1;height:1px;background:var(--border)}
+.tree-progress-row{display:flex;gap:14px;flex-wrap:wrap;padding:12px 20px;border-top:1px solid var(--border)}
+.tp-item{display:flex;flex-direction:column;gap:4px}
+.tp-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em}
+.tp-bar{width:70px;height:2px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.tp-fill{height:100%;border-radius:2px;transition:width 0.7s ease}
+.tp-fill.event{background:var(--gold)}.tp-fill.video{background:var(--blue)}.tp-fill.build{background:var(--purple)}.tp-fill.proj{background:var(--green)}
+.tp-count{font-family:'Space Mono',monospace;font-size:7px;color:var(--dim)}
+
+/* ════════ PROJECTS ════════ */
+.project-card{margin:0 20px 10px;background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.project-header{padding:12px 14px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px}
+.project-type-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;margin-top:4px}
+.project-content{flex:1}
+.project-name{font-family:'Bebas Neue',sans-serif;font-size:15px;letter-spacing:0.1em;line-height:1}
+.project-meta{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:3px}
+.project-payout{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.08em;color:var(--green);line-height:1;flex-shrink:0}
+.project-steps{padding:10px 14px;display:flex;flex-direction:column;gap:6px}
+.proj-step{display:flex;align-items:center;gap:10px;cursor:pointer}
+.proj-step-check{width:16px;height:16px;border:1px solid var(--dim);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;transition:all 0.2s}
+.proj-step.done .proj-step-check{background:var(--green);border-color:var(--green);color:#fff}
+.proj-step-name{font-size:11px;color:var(--silver);transition:color 0.2s}
+.proj-step.done .proj-step-name{color:var(--dim);text-decoration:line-through}
+.proj-step-due{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-left:auto;flex-shrink:0}
+.proj-step-due.overdue{color:var(--red)}
+.project-progress{padding:8px 14px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.proj-prog-bar{flex:1;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.proj-prog-fill{height:100%;border-radius:2px;transition:width 0.6s ease}
+.proj-pct{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);flex-shrink:0}
+.proj-delete{background:transparent;border:none;color:var(--dim);font-size:12px;cursor:pointer;flex-shrink:0}
+
+/* ════════ FINANCE ════════ */
+.fin-summary{padding:14px 20px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fin-stat{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 12px}
+.fin-stat-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim);margin-bottom:3px}
+.fin-stat-val{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.08em;line-height:1}
+.fin-stat-sub{font-family:'Space Mono',monospace;font-size:7px;color:var(--dim);margin-top:2px}
+.floor-wrap{padding:10px 20px;border-bottom:1px solid var(--border)}
+.floor-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim);margin-bottom:5px;display:flex;justify-content:space-between}
+.floor-label span{color:var(--white)}
+.floor-bar{height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden}
+.floor-fill{height:100%;border-radius:3px;transition:width 0.7s ease;background:linear-gradient(90deg,var(--red),var(--gold),var(--green))}
+.log-form{margin:0 20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.log-tabs{display:flex;border-bottom:1px solid var(--border)}
+.log-tab{flex:1;padding:9px;background:transparent;border:none;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:0.12em;color:var(--dim);cursor:pointer;transition:all 0.2s}
+.log-tab.active{color:var(--white);background:rgba(255,255,255,0.03)}
+.log-inner{padding:12px;display:flex;flex-direction:column;gap:8px}
+.toggle-row{display:flex;align-items:center;gap:8px;font-family:'Space Mono',monospace;font-size:9px;color:var(--silver);cursor:pointer}
+.tbox{width:15px;height:15px;border:1px solid var(--dim);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:9px;transition:all 0.2s}
+.tbox.on{background:var(--gold);border-color:var(--gold);color:#000}
+.txn{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:9px 12px;display:flex;align-items:center;gap:10px}
+.txn-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.txn-dot.income{background:var(--green)}.txn-dot.expense{background:var(--red)}
+.txn-content{flex:1;min-width:0}
+.txn-desc{font-size:11px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.txn-meta{font-family:'Space Mono',monospace;font-size:7px;color:var(--dim);margin-top:1px}
+.txn-amount{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.08em;flex-shrink:0}
+.txn-amount.income{color:var(--green)}.txn-amount.expense{color:var(--red)}
+.txn-del{background:transparent;border:none;color:var(--dim);font-size:13px;cursor:pointer;flex-shrink:0}
+.pricing-cat{margin-bottom:10px;background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.pricing-cat-header{padding:9px 12px;border-bottom:1px solid var(--border);font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;display:flex;align-items:center}
+.pricing-row{padding:7px 12px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(255,255,255,0.03)}
+.pricing-row:last-child{border-bottom:none}
+.pricing-tier{font-size:11px;color:var(--silver)}
+.pricing-val{font-family:'Space Mono',monospace;font-size:9px;color:var(--white)}
+.client-row{padding:8px 20px;display:flex;gap:5px}
+.client-btn{flex:1;padding:5px;background:transparent;border:1px solid var(--border);border-radius:2px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.08em;color:var(--dim);cursor:pointer;transition:all 0.2s;text-align:center}
+.client-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.mile-summary{margin:0 20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px 14px}
+.mile-total{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:0.08em;color:var(--blue)}
+.mile-deduction{font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px}
+
+/* ════════ WORKOUT ════════ */
+.body-stats{padding:12px 20px;border-bottom:1px solid var(--border);display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.body-stat{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:8px 10px;text-align:center}
+.body-stat-val{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:0.08em;line-height:1}
+.body-stat-lbl{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.12em;color:var(--dim);margin-top:2px}
+.split-days{padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:5px}
+.split-day{flex:1;padding:7px 4px;background:var(--surface);border:1px solid var(--border);border-radius:2px;text-align:center;cursor:pointer;transition:all 0.2s}
+.split-day.active{border-color:var(--gold);background:var(--gold-glow)}
+.split-day.rest{opacity:0.35;cursor:default}
+.split-day-name{font-family:'Bebas Neue',sans-serif;font-size:12px;letter-spacing:0.08em;line-height:1}
+.split-day-focus{font-family:'Space Mono',monospace;font-size:6px;color:var(--dim);margin-top:2px}
+.split-day.active .split-day-focus{color:var(--gold-dim)}
+.muscle-legend{padding:7px 20px;display:flex;gap:7px;flex-wrap:wrap;border-bottom:1px solid var(--border)}
+.ml-item{display:flex;align-items:center;gap:3px}
+.ml-dot{width:7px;height:7px;border-radius:50%}
+.ml-label{font-family:'Space Mono',monospace;font-size:7px;color:var(--dim)}
+.exercises-wrap{padding:0 20px;display:flex;flex-direction:column;gap:8px}
+.exercise-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.ex-header{padding:9px 12px;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--border)}
+.muscle-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ex-name{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;flex:1}
+.ex-pr{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)}
+.sets-row{padding:7px 12px;display:flex;gap:5px;flex-wrap:wrap}
+.set-chip{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:2px;padding:4px 7px;font-family:'Space Mono',monospace;font-size:8px;color:var(--silver);cursor:pointer;transition:all 0.2s}
+.set-chip.done{border-color:var(--green);color:var(--green);background:rgba(76,175,110,0.08)}
+.add-set-btn{background:transparent;border:1px dashed var(--border);border-radius:2px;padding:4px 7px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);cursor:pointer}
+
+/* ════════ JOURNAL ════════ */
+.journal-new{margin:0 20px;background:var(--surface);border:1px solid var(--border);border-radius:3px;overflow:hidden}
+.j-header-row{padding:10px 12px 7px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.j-date-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim)}
+.j-stats-row{display:flex;gap:10px}
+.j-stat{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)}
+.j-stat span{color:var(--gold)}
+.j-director{padding:9px 12px;border-bottom:1px solid var(--border)}
+.j-dir-label{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.18em;color:var(--gold-dim);margin-bottom:3px}
+.j-dir-inp{width:100%;background:transparent;border:none;outline:none;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;font-style:italic}
+.j-textarea{width:100%;background:transparent;border:none;outline:none;color:var(--white);font-family:'DM Sans',sans-serif;font-size:12px;padding:10px 12px;resize:none;line-height:1.6;min-height:100px}
+.tags-row{padding:7px 12px;display:flex;gap:5px;flex-wrap:wrap;border-top:1px solid var(--border)}
+.tag-btn{padding:3px 8px;border-radius:1px;border:1px solid var(--border);background:transparent;font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.08em;color:var(--dim);cursor:pointer;transition:all 0.2s}
+.tag-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.j-save-row{padding:9px 12px;border-top:1px solid var(--border);display:flex;justify-content:flex-end}
+.journal-entries{padding:0 20px;display:flex;flex-direction:column;gap:8px}
+.j-entry{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px}
+.entry-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.entry-date{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim)}
+.entry-pct{font-family:'Space Mono',monospace;font-size:8px;color:var(--gold-dim)}
+.entry-director{font-size:11px;font-style:italic;color:var(--silver);margin-bottom:5px}
+.entry-body{font-size:11px;color:var(--silver);line-height:1.6}
+.entry-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:7px}
+.entry-tag{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.08em;padding:2px 6px;border:1px solid rgba(212,175,55,0.2);border-radius:1px;color:var(--gold-dim)}
+
+/* ════════ OUTPUT ════════ */
+.period-row{padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:5px}
+.period-btn{flex:1;padding:8px;background:var(--surface);border:1px solid var(--border);border-radius:2px;font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.12em;color:var(--dim);cursor:pointer;transition:all 0.2s;text-align:center}
+.period-btn.active{border-color:var(--gold);color:var(--gold);background:var(--gold-glow)}
+.platform-section{margin-bottom:14px}
+.platform-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.platform-icon{font-size:18px}
+.platform-name{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:0.1em}
+.platform-handle{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-left:auto}
+.output-items{display:flex;flex-direction:column;gap:6px}
+.output-item{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 12px}
+.output-item-row{display:flex;align-items:center;gap:10px}
+.output-label{font-size:11px;color:var(--silver);flex:1}
+.output-count{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.08em;line-height:1;flex-shrink:0}
+.output-target{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);flex-shrink:0}
+.output-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-top:6px}
+.output-fill{height:100%;border-radius:2px;transition:width 0.6s ease}
+.output-btns{display:flex;gap:5px;margin-top:6px}
+.out-btn{flex:1;padding:4px;background:transparent;border:1px solid var(--border);border-radius:2px;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);cursor:pointer;text-align:center;transition:all 0.2s}
+.out-btn:hover{border-color:var(--border2);color:var(--white)}
+
+/* ════════ CALENDAR ════════ */
+.cal-header{padding:12px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.cal-month{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.1em}
+.cal-nav{background:transparent;border:1px solid var(--border);color:var(--silver);font-family:'Space Mono',monospace;font-size:11px;padding:5px 12px;cursor:pointer;border-radius:2px;transition:all 0.2s}
+.cal-nav:hover{border-color:var(--border2);color:var(--white)}
+.cal-grid{padding:12px 20px}
+.cal-days-hdr{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px}
+.cal-day-lbl{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.1em;color:var(--dim);text-align:center;padding:3px 0}
+.cal-cells{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-cell{min-height:44px;background:var(--surface);border:1px solid var(--border);border-radius:2px;padding:4px;cursor:pointer;transition:all 0.2s}
+.cal-cell:hover{border-color:var(--border2)}
+.cal-cell.other-month{opacity:0.3}
+.cal-cell.today-cell{border-color:var(--gold);background:var(--gold-glow)}
+.cal-date{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;line-height:1;color:var(--silver)}
+.cal-cell.today-cell .cal-date{color:var(--gold)}
+.cal-ev-dot{width:4px;height:4px;border-radius:50%;margin:1px auto}
+.cal-events-list{padding:0 20px;display:flex;flex-direction:column;gap:6px}
+.cal-event{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+.cal-ev-color{width:3px;align-self:stretch;border-radius:2px;flex-shrink:0}
+.cal-ev-content{flex:1}
+.cal-ev-name{font-size:12px;font-weight:500}
+.cal-ev-meta{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:2px}
+.cal-ev-del{background:transparent;border:none;color:var(--dim);font-size:13px;cursor:pointer}
+
+/* ════════ HEALTH ════════ */
+.health-grid{padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.health-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px}
+.hc-title{font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.2em;color:var(--dim);margin-bottom:6px;text-transform:uppercase}
+.hc-val{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:0.08em;line-height:1}
+.hc-sub{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);margin-top:2px}
+.hc-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-top:7px}
+.hc-fill{height:100%;border-radius:2px;transition:width 0.7s ease}
+.red-flags{padding:0 20px;display:flex;flex-direction:column;gap:5px}
+.red-flag{background:rgba(207,74,60,0.06);border:1px solid rgba(207,74,60,0.22);border-radius:3px;padding:9px 12px;display:flex;align-items:center;gap:9px}
+.rf-dot{width:5px;height:5px;border-radius:50%;background:var(--red);flex-shrink:0;animation:pulse 1.8s infinite}
+.rf-text{font-family:'Space Mono',monospace;font-size:9px;color:rgba(207,74,60,0.8);letter-spacing:0.08em}
+.win-streak-section{padding:0 20px;display:flex;flex-direction:column;gap:5px}
+.win-streak-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px 14px}
+.win-streak-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.2em;color:var(--dim);margin-bottom:6px}
+.win-streak-val{font-family:'DM Sans',sans-serif;font-size:12px;color:var(--silver);line-height:1.5;font-style:italic}
+.habit-trend{padding:0 20px;display:flex;flex-direction:column;gap:5px}
+.trend-row{display:flex;align-items:center;gap:8px}
+.trend-name{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.06em;color:var(--silver);width:90px;flex-shrink:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.trend-bar{flex:1;height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden}
+.trend-fill{height:100%;border-radius:2px;transition:width 0.7s ease}
+.trend-pct{font-family:'Space Mono',monospace;font-size:8px;color:var(--dim);width:28px;text-align:right;flex-shrink:0}
+/* best/worst */
+.bw-grid{padding:0 20px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bw-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:12px}
+.bw-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.18em;color:var(--dim);margin-bottom:6px}
+.bw-val{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.08em;line-height:1.3}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header">
-  <div class="header-left">
-    <h1>SHO <span>OS</span></h1>
-    <div class="header-date" id="headerDate"></div>
-  </div>
-  <div class="countdown-wrap">
-    <div class="countdown-num" id="daysLeft">—</div>
-    <div class="countdown-label">Days to May 1st</div>
-  </div>
-</div>
-
-<!-- XP -->
-<div class="xp-row">
-  <div class="xp-label">TOTAL XP</div>
-  <div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
-  <div class="xp-num" id="xpNum">0 XP</div>
-</div>
-
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab active" id="tab-daily" onclick="switchTab('daily')">
-    ☀️ Daily <span class="tab-badge" id="dailyBadge">0/6</span>
-  </button>
-  <button class="tab" id="tab-tree" onclick="switchTab('tree')">
-    🌳 Skill Tree <span class="tab-badge" id="treeBadge">0</span>
-  </button>
-</div>
-
-<!-- ══ DAILY PANEL ══ -->
+<!-- ══ DAILY ══ -->
 <div class="panel active" id="panel-daily">
-
-  <div class="session-row">
-    <div class="session-label">Session</div>
-    <button class="session-btn morning" id="btnMorning" onclick="setSession('morning')">☀️ Morning</button>
-    <button class="session-btn night"   id="btnNight"   onclick="setSession('night')">🌙 Night</button>
-    <div class="session-time" id="sessionTime"></div>
-  </div>
-
-  <div class="goals" id="goalsList"></div>
-
-  <div class="complete-banner" id="completeBanner">
-    <div class="banner-title">All 6 Done 🔥</div>
-    <div class="banner-sub">Streak extended · Check the skill tree next</div>
-  </div>
-
-  <div class="streak-row">
-    <div class="streak-left">
-      <div class="streak-label">Streak</div>
-      <div class="streak-num" id="streakNum">0</div>
-      <div class="streak-sub">days perfect</div>
+  <div class="ph">
+    <div>
+      <div class="pt">DAILY <span>OS</span></div>
+      <div class="ps" id="dailyDate"></div>
     </div>
-    <div class="streak-right">
-      <div class="prog-label-s">Today</div>
-      <div class="prog-bar-s"><div class="prog-fill-s" id="dailyProgFill" style="width:0%"></div></div>
-      <div class="prog-pct" id="dailyProgPct">0 / 6</div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="text-align:right">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);line-height:1" id="countdownD">—</div>
+        <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.15em;color:var(--dim)">TO MAY 1</div>
+      </div>
+      <button onclick="openMenu()" style="background:transparent;border:1px solid var(--border);color:var(--silver);font-size:18px;padding:8px 10px;cursor:pointer;border-radius:2px;line-height:1">☰</button>
     </div>
   </div>
 
+  <div class="momentum-wrap">
+    <div class="mom-score" id="momScore">0</div>
+    <div class="mom-right">
+      <div class="mom-label">MOMENTUM SCORE</div>
+      <div class="mom-bar"><div class="mom-fill" id="momFill" style="width:0%"></div></div>
+      <div class="mom-stats">
+        <div><div class="ms-val" id="mStreak">0</div><div class="ms-label">STREAK</div></div>
+        <div><div class="ms-val" id="mDone">0/10</div><div class="ms-label">TODAY</div></div>
+        <div><div class="ms-val" id="m90day">D1</div><div class="ms-label">90 DAY</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding:12px 20px 0">
+    <div class="cm-wrap">
+      <div class="cm-top">
+        <div><div class="cm-label">🧠 CLEAN MIND</div><div class="cm-sub">Tap YES or NO each day</div></div>
+        <div class="cm-streak" id="cmStreak">0</div>
+      </div>
+      <div class="cm-days" id="cmDays"></div>
+      <div class="cm-btns">
+        <button class="cm-yes" onclick="logCleanMind(true)">✓ YES — CLEAN</button>
+        <button class="cm-no" onclick="logCleanMind(false)">✗ BROKE</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="sl">DAILY HABITS</div>
+  <div class="habits-wrap" id="habitsList"></div>
+  <div class="spacer"></div>
+  <div class="sl">WIN OF THE DAY</div>
+  <div class="win-wrap">
+    <div class="win-label">🏆 What's the win today?</div>
+    <textarea class="win-inp" id="winInput" rows="2" placeholder="Even small ones count..."></textarea>
+  </div>
+  <div class="spacer"></div>
   <div class="history-wrap">
-    <div class="history-label">Last 14 Days</div>
+    <div class="history-label">14-DAY HISTORY</div>
     <div class="dots-row" id="historyDots"></div>
   </div>
-
-</div>
-
-<!-- ══ TREE PANEL ══ -->
-<div class="panel" id="panel-tree">
-<div class="tree-panel">
-
-  <!-- WINDOW 1 -->
-  <div class="window-block">
-    <div class="window-header">
-      <div class="w-date">APR 15–16</div>
-      <div class="w-title" style="color:var(--urgent)">Before Festival</div>
-      <div class="w-tag" style="color:var(--urgent);border-color:rgba(207,74,60,0.35)">Do Now</div>
-      <div class="w-divider"></div>
-    </div>
-    <div class="node-grid">
-
-      <div class="node track-urgent" id="n-setfest" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🎧</span>
-          <div class="node-name">Festival Set Built</div>
-          <div class="node-desc">Set ready for Friday</div>
-          <div class="node-xp">+100 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-video" id="n-mvedit" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🎬</span>
-          <div class="node-name">MV Edit Started</div>
-          <div class="node-desc">Footage in — rough cut begun</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event" id="n-promo1" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">📱</span>
-          <div class="node-name">TikTok Promo Drop</div>
-          <div class="node-desc">First May 1st push. Raw, personal</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event" id="n-dm20" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">💬</span>
-          <div class="node-name">DM 20 People</div>
-          <div class="node-desc">Personal. Not a blast</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="window-break">↓ Festival Apr 17–19 ↓</div>
-
-  <!-- WINDOW 2 -->
-  <div class="window-block">
-    <div class="window-header">
-      <div class="w-date">APR 17–19</div>
-      <div class="w-title" style="color:var(--festival)">Festival Mode</div>
-      <div class="w-tag" style="color:var(--festival);border-color:var(--festival-dim)">3 Days</div>
-      <div class="w-divider"></div>
-    </div>
-    <div class="node-grid">
-
-      <div class="node track-fest locked" id="n-festset" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🔥</span>
-          <div class="node-name">Set Performed</div>
-          <div class="node-desc">Live rep for May 1st energy</div>
-          <div class="node-xp">+150 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-fest locked" id="n-festcontent" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">📹</span>
-          <div class="node-name">Content Captured</div>
-          <div class="node-desc">B-roll, crowd, set, BTS</div>
-          <div class="node-xp">+100 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-fest locked" id="n-festnet" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🤝</span>
-          <div class="node-name">3 Real Connects</div>
-          <div class="node-desc">Artists, promoters — names logged</div>
-          <div class="node-xp">+100 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-festpromo" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🎯</span>
-          <div class="node-name">May 1st Push Live</div>
-          <div class="node-desc">Post from festival for May 1st</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="window-break">↓ Final Push Apr 20–30 ↓</div>
-
-  <!-- WINDOW 3 -->
-  <div class="window-block">
-    <div class="window-header">
-      <div class="w-date">APR 20–30</div>
-      <div class="w-title" style="color:var(--gold)">Final Push</div>
-      <div class="w-tag" style="color:var(--gold);border-color:var(--gold-dim)">10 Days</div>
-      <div class="w-divider"></div>
-    </div>
-    <div class="node-grid">
-
-      <div class="node track-urgent locked" id="n-setmay1" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🎧</span>
-          <div class="node-name">May 1st Set Built</div>
-          <div class="node-desc">Different energy from festival set</div>
-          <div class="node-xp">+150 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-video locked" id="n-mvdone" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🎬</span>
-          <div class="node-name">Music Video Done</div>
-          <div class="node-desc">Final cut. Ready to drop May 1st</div>
-          <div class="node-xp">+200 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-tiktok3" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">📱</span>
-          <div class="node-name">3x TikTok Posts</div>
-          <div class="node-desc">Primary driver. Keep pushing</div>
-          <div class="node-xp">+125 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-igstory" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">📸</span>
-          <div class="node-name">IG Story Sequence</div>
-          <div class="node-desc">Countdown, lineup, venue teases</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-shotlist" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🎥</span>
-          <div class="node-name">Shot List Built</div>
-          <div class="node-desc">Every angle mapped. Roles assigned</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-may30concept" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">💡</span>
-          <div class="node-name">May 30th Concept</div>
-          <div class="node-desc">Name, vibe, venue — ready to announce May 2nd</div>
-          <div class="node-xp">+100 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-video locked" id="n-pendingshoot" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">📅</span>
-          <div class="node-name">Shoot Rescheduled</div>
-          <div class="node-desc">Date locked with client</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="window-break">↓ May 1st ↓</div>
-
-  <!-- MAY 1ST -->
-  <div class="window-block">
-    <div class="window-header">
-      <div class="w-date">MAY 1ST</div>
-      <div class="w-title" style="color:var(--gold)">Event Night</div>
-      <div class="w-tag" style="color:var(--gold);border-color:var(--gold-dim)">The Night</div>
-      <div class="w-divider"></div>
-    </div>
-    <div class="node-grid">
-
-      <div class="node track-event locked" id="n-loadincontent" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🏭</span>
-          <div class="node-name">Load-In Captured</div>
-          <div class="node-desc">Setup, venue, soundcheck</div>
-          <div class="node-xp">+75 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-perform" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">🔥</span>
-          <div class="node-name">Set Performed</div>
-          <div class="node-desc">You're on the decks. Execute</div>
-          <div class="node-xp">+300 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-nightcontent" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">📹</span>
-          <div class="node-name">Night Documented</div>
-          <div class="node-desc">Crowd, energy, booth, reactions</div>
-          <div class="node-xp">+150 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-      <div class="node track-event locked" id="n-samenight" onclick="completeNode(this)">
-        <div class="node-inner">
-          <span class="node-icon">⚡</span>
-          <div class="node-name">Raw Clip Posted</div>
-          <div class="node-desc">Within 2 hours. No waiting</div>
-          <div class="node-xp">+100 XP</div>
-          <div class="node-badge done">✓</div><div class="node-badge lock">🔒</div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</div>
-
-<!-- tree progress -->
-<div class="tree-progress">
-  <div class="tp-item">
-    <div class="tp-label" style="color:var(--gold-dim)">Event</div>
-    <div class="tp-bar"><div class="tp-fill event" id="tpEvent" style="width:0%"></div></div>
-    <div class="tp-count" id="tpEventC">0/10</div>
-  </div>
-  <div class="tp-item">
-    <div class="tp-label" style="color:var(--video-dim)">Video</div>
-    <div class="tp-bar"><div class="tp-fill video" id="tpVideo" style="width:0%"></div></div>
-    <div class="tp-count" id="tpVideoC">0/3</div>
-  </div>
-  <div class="tp-item">
-    <div class="tp-label" style="color:var(--festival-dim)">Festival</div>
-    <div class="tp-bar"><div class="tp-fill festival" id="tpFest" style="width:0%"></div></div>
-    <div class="tp-count" id="tpFestC">0/4</div>
+  <div class="streak-row">
+    <div><div class="streak-lbl">STREAK</div><div class="streak-num" id="streakNum">0 days</div></div>
+    <button class="btn-ghost" onclick="resetToday()">Reset Today</button>
   </div>
 </div>
 
+<!-- ══ MISSIONS ══ -->
+<div class="panel" id="panel-missions">
+  <div class="ph">
+    <div><div class="pt">MISSIONS</div><div class="ps">Apr 21 → Jul 20 · 90 Days</div></div>
+    <div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim)" id="missionXP">0 XP</div>
+  </div>
+  <div class="tree-wrap">
+
+    <div class="tree-window">
+      <div class="twh"><div class="tw-date">APR 21–16</div><div class="tw-title" style="color:var(--red)">Do Now</div><div class="tw-tag" style="color:var(--red);border-color:rgba(207,74,60,0.35)">Urgent</div><div class="tw-div"></div></div>
+      <div class="node-grid">
+        <div class="node track-urgent" id="n-setfest" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎧</span><div class="node-name">Festival Set</div><div class="node-desc">Built for Apr 17</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video" id="n-mvedit" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎬</span><div class="node-name">MV Edit Start</div><div class="node-desc">Rough cut begun</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event" id="n-promo1" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📱</span><div class="node-name">TikTok Promo</div><div class="node-desc">First May 1st push</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event" id="n-dm20" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">💬</span><div class="node-name">DM 20 People</div><div class="node-desc">Personal outreach</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build" id="n-invoice" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📄</span><div class="node-name">Invoice Template</div><div class="node-desc">Get paid properly</div><div class="node-xp">+50 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build" id="n-contract" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">✍️</span><div class="node-name">Client Contract</div><div class="node-desc">Protects every job</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓ Festival Apr 17–19 ↓</div>
+
+    <div class="tree-window">
+      <div class="twh"><div class="tw-date">APR 17–19</div><div class="tw-title" style="color:var(--orange)">Festival</div><div class="tw-div"></div></div>
+      <div class="node-grid">
+        <div class="node track-fest locked" id="n-festset" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🔥</span><div class="node-name">Set Performed</div><div class="node-desc">Live rep for May 1</div><div class="node-xp">+150 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-fest locked" id="n-festcontent" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📹</span><div class="node-name">Content Captured</div><div class="node-desc">B-roll, crowd, BTS</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-fest locked" id="n-festnet" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🤝</span><div class="node-name">3 Real Connects</div><div class="node-desc">Names + contacts</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-festpromo" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎯</span><div class="node-name">May 1st Push</div><div class="node-desc">Post from festival</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build" id="n-behance" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎨</span><div class="node-name">Portfolio Live</div><div class="node-desc">Behance — free</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build" id="n-linktree" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🔗</span><div class="node-name">Nu Saga Linktree</div><div class="node-desc">One link for all</div><div class="node-xp">+50 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓ Final Push Apr 20–30 ↓</div>
+
+    <div class="tree-window">
+      <div class="twh"><div class="tw-date">APR 20–30</div><div class="tw-title" style="color:var(--gold)">Final Push</div><div class="tw-div"></div></div>
+      <div class="node-grid">
+        <div class="node track-urgent locked" id="n-setmay1" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎧</span><div class="node-name">May 1st Set</div><div class="node-desc">Different from festival</div><div class="node-xp">+150 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video locked" id="n-mvdone" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎬</span><div class="node-name">Music Video Done</div><div class="node-desc">Final cut ready</div><div class="node-xp">+200 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-tiktok3" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📱</span><div class="node-name">3x TikToks</div><div class="node-desc">Keep pushing</div><div class="node-xp">+125 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-igstory" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📸</span><div class="node-name">IG Story Run</div><div class="node-desc">Countdown + teases</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-shotlist" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎥</span><div class="node-name">Shot List</div><div class="node-desc">Every angle mapped</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-may30concept" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">💡</span><div class="node-name">May 30th Concept</div><div class="node-desc">Ready to announce</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video locked" id="n-pendingshoot" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📅</span><div class="node-name">Shoot Rescheduled</div><div class="node-desc">Date locked w/ client</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-reel" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎞️</span><div class="node-name">Reel Updated</div><div class="node-desc">60-90 sec best work</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-pressphoto" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📷</span><div class="node-name">Press Photo</div><div class="node-desc">One clean pro shot</div><div class="node-xp">+50 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓ May 1st ↓</div>
+
+    <div class="tree-window">
+      <div class="twh"><div class="tw-date">MAY 1ST</div><div class="tw-title" style="color:var(--gold)">Event Night</div><div class="tw-div"></div></div>
+      <div class="node-grid">
+        <div class="node track-event locked" id="n-loadincontent" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🏭</span><div class="node-name">Load-In Captured</div><div class="node-desc">Setup + soundcheck</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-perform" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🔥</span><div class="node-name">Set Performed</div><div class="node-desc">Execute</div><div class="node-xp">+300 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-nightcontent" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📹</span><div class="node-name">Night Documented</div><div class="node-desc">Every angle</div><div class="node-xp">+150 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-samenight" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">⚡</span><div class="node-name">Raw Clip Posted</div><div class="node-desc">Within 2 hours</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-may1announce" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📣</span><div class="node-name">May 30 Announced</div><div class="node-desc">Drops May 2-3</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-eventrecap" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📊</span><div class="node-name">Event Recap</div><div class="node-desc">Attendance, revenue, lessons</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓ May 2 → May 30 ↓</div>
+
+    <div class="tree-window">
+      <div class="twh"><div class="tw-date">MAY 2–30</div><div class="tw-title" style="color:var(--blue)">Build Phase</div><div class="tw-div"></div></div>
+      <div class="node-grid">
+        <div class="node track-event locked" id="n-3shorts" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">⚡</span><div class="node-name">3 Shorts Posted</div><div class="node-desc">Cut from May 1st</div><div class="node-xp">+150 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video locked" id="n-yt1" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">▶️</span><div class="node-name">YouTube Mini-Doc</div><div class="node-desc">May 1st film upload</div><div class="node-xp">+250 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video locked" id="n-retainer" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">💼</span><div class="node-name">Retainer Client</div><div class="node-desc">Monthly recurring</div><div class="node-xp">+400 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-epk" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📋</span><div class="node-name">DJ EPK Created</div><div class="node-desc">Bio, mix, photos</div><div class="node-xp">+150 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-mix" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎵</span><div class="node-name">First Mix Live</div><div class="node-desc">SoundCloud public</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-booking1" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎧</span><div class="node-name">DJ Booking</div><div class="node-desc">Outside Birmingham</div><div class="node-xp">+300 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-nusagapage" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🌐</span><div class="node-name">Nu Saga One-Pager</div><div class="node-desc">Who we are + reach</div><div class="node-xp">+100 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-bizbank" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🏦</span><div class="node-name">Business Account</div><div class="node-desc">Personal + biz split</div><div class="node-xp">+75 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-may30exec" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🔥</span><div class="node-name">May 30th Executed</div><div class="node-desc">Second event runs</div><div class="node-xp">+400 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+      </div>
+    </div>
+
+    <div class="tree-connector">↓ June → July 20 ↓</div>
+
+    <div class="tree-window">
+      <div class="twh"><div class="tw-date">JUN 1–JUL 20</div><div class="tw-title" style="color:var(--purple)">Scale Phase</div><div class="tw-div"></div></div>
+      <div class="node-grid">
+        <div class="node track-build locked" id="n-sponsor" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">💼</span><div class="node-name">Sponsor Deck</div><div class="node-desc">One-page pitch</div><div class="node-xp">+200 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-track1" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🎶</span><div class="node-name">First Track Released</div><div class="node-desc">Changes everything</div><div class="node-xp">+300 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video locked" id="n-5kmonth" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">💰</span><div class="node-name">$5k Video Month</div><div class="node-desc">2 shoots at $2,500</div><div class="node-xp">+500 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-photorelaunch" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">📸</span><div class="node-name">Photo Relaunch</div><div class="node-desc">$1,500/mo target</div><div class="node-xp">+200 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-event locked" id="n-event3" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🏭</span><div class="node-name">3rd Event Booked</div><div class="node-desc">Nu Saga momentum</div><div class="node-xp">+400 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-video locked" id="n-ytconsistent" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">▶️</span><div class="node-name">4 YT Videos/Mo</div><div class="node-desc">Consistent 60 days</div><div class="node-xp">+300 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+        <div class="node track-build locked" id="n-90checkpoint" onclick="completeNode(this)"><div class="node-inner"><span class="node-icon">🏁</span><div class="node-name">90 Day Review</div><div class="node-desc">Jul 20 — assess + reset</div><div class="node-xp">+500 XP</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div></div>
+      </div>
+    </div>
+
+    <div id="projectNodesWrap"></div>
+
+  </div>
+  <div class="tree-progress-row">
+    <div class="tp-item"><div class="tp-label" style="color:var(--gold-dim)">Event</div><div class="tp-bar"><div class="tp-fill event" id="tpEvent" style="width:0%"></div></div><div class="tp-count" id="tpEventC">0/0</div></div>
+    <div class="tp-item"><div class="tp-label" style="color:rgba(91,155,213,0.5)">Video</div><div class="tp-bar"><div class="tp-fill video" id="tpVideo" style="width:0%"></div></div><div class="tp-count" id="tpVideoC">0/0</div></div>
+    <div class="tp-item"><div class="tp-label" style="color:rgba(155,122,200,0.5)">Build</div><div class="tp-bar"><div class="tp-fill build" id="tpBuild" style="width:0%"></div></div><div class="tp-count" id="tpBuildC">0/0</div></div>
+    <div class="tp-item"><div class="tp-label" style="color:rgba(76,175,110,0.5)">Projects</div><div class="tp-bar"><div class="tp-fill proj" id="tpProj" style="width:0%"></div></div><div class="tp-count" id="tpProjC">0/0</div></div>
+  </div>
+  <div style="padding:8px 20px 0;display:flex;justify-content:flex-end"><button class="btn-ghost" onclick="resetTree()">Reset Missions</button></div>
 </div>
 
-<!-- FOOTER -->
-<div class="footer">
-  <button class="btn-sm" onclick="resetDaily()">Reset Today</button>
-  <button class="btn-sm" onclick="resetTree()">Reset Tree</button>
+<!-- ══ PROJECTS ══ -->
+<div class="panel" id="panel-projects">
+  <div class="ph">
+    <div><div class="pt">PROJECTS</div><div class="ps">Feeds into Missions</div></div>
+    <button class="btn-gold" onclick="openModal('addProjectModal')">+ ADD</button>
+  </div>
+  <div class="spacer"></div>
+  <div id="projectsList"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══ FINANCE ══ -->
+<div class="panel" id="panel-finance">
+  <div class="ph">
+    <div><div class="pt">FINANCE</div><div class="ps" id="finMonth"></div></div>
+    <div style="text-align:right">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;line-height:1" id="finNet">$0</div>
+      <div style="font-family:'Space Mono',monospace;font-size:7px;letter-spacing:0.15em;color:var(--dim)">NET THIS MONTH</div>
+    </div>
+  </div>
+  <div class="fin-summary">
+    <div class="fin-stat"><div class="fin-stat-label">INCOME</div><div class="fin-stat-val" style="color:var(--green)" id="finIncome">$0</div><div class="fin-stat-sub" id="finIncomeC">0 entries</div></div>
+    <div class="fin-stat"><div class="fin-stat-label">EXPENSES</div><div class="fin-stat-val" style="color:var(--red)" id="finExpenses">$0</div><div class="fin-stat-sub" id="finExpenseC">0 entries</div></div>
+  </div>
+  <div class="floor-wrap">
+    <div class="floor-label">Floor <span id="floorPct">0%</span> covered · Need $2,300</div>
+    <div class="floor-bar"><div class="floor-fill" id="floorFill" style="width:0%"></div></div>
+  </div>
+  <div class="floor-wrap" style="border-bottom:none">
+    <div class="floor-label">$10k Goal <span id="goalPct">0%</span></div>
+    <div class="floor-bar" style="height:3px"><div class="floor-fill" id="goalFill" style="width:0%"></div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="sl">LOG TRANSACTION</div>
+  <div class="log-form">
+    <div class="log-tabs">
+      <button class="log-tab active" id="lt-income" onclick="setLogTab('income')">+ INCOME</button>
+      <button class="log-tab" id="lt-expense" onclick="setLogTab('expense')">- EXPENSE</button>
+      <button class="log-tab" id="lt-mile" onclick="setLogTab('mile')">🚗 MILES</button>
+    </div>
+    <div class="log-inner">
+      <div id="logIE">
+        <div class="form-row" style="margin-bottom:8px">
+          <input class="inp" id="logDesc" placeholder="Description" style="flex:2">
+          <input class="inp" id="logAmt" placeholder="$" type="number" style="width:75px;flex:none">
+        </div>
+        <div class="form-row" style="margin-bottom:8px">
+          <select class="sel" id="logCat">
+            <option value="Video">📹 Video</option><option value="Nu Saga">🎪 Nu Saga</option>
+            <option value="Photography">📸 Photo</option><option value="DJ">🎧 DJ</option>
+            <option value="Design">🎨 Design</option><option value="Personal">👤 Personal</option>
+            <option value="Gear">🎛️ Gear</option><option value="Travel">✈️ Travel</option>
+            <option value="Marketing">📣 Marketing</option>
+          </select>
+          <input class="inp" id="logDate" type="date" style="flex:1">
+        </div>
+        <div class="toggle-row" onclick="toggleRec()" style="margin-bottom:8px"><div class="tbox" id="recBox"></div> Recurring</div>
+      </div>
+      <div id="logMile" style="display:none">
+        <div class="form-row" style="margin-bottom:8px"><input class="inp" id="mFrom" placeholder="From"><input class="inp" id="mTo" placeholder="To"></div>
+        <div class="form-row" style="margin-bottom:8px"><input class="inp" id="mMiles" placeholder="Miles" type="number"><input class="inp" id="mDate" type="date"></div>
+        <input class="inp" id="mPurpose" placeholder="Purpose" style="width:100%;margin-bottom:8px">
+      </div>
+      <button class="btn-gold" onclick="logTxn()" style="width:100%">LOG IT</button>
+    </div>
+  </div>
+  <div class="spacer"></div>
+  <div class="sl">RECENT</div>
+  <div style="padding:0 20px;display:flex;flex-direction:column;gap:6px" id="txnList"></div>
+  <div class="spacer"></div>
+  <div class="sl">MILEAGE</div>
+  <div class="mile-summary"><div class="mile-total" id="totalMiles">0.0 miles</div><div class="mile-deduction" id="mileDeduct">Est. tax deduction: $0.00</div></div>
+  <div class="spacer"></div>
+  <div class="sl">RATE CARD</div>
+  <div class="client-row"><button class="client-btn active" id="ct-company" onclick="setClient('company')">COMPANY</button><button class="client-btn" id="ct-individual" onclick="setClient('individual')">INDIVIDUAL</button><button class="client-btn" id="ct-friend" onclick="setClient('friend')">FRIEND</button></div>
+  <div style="padding:0 20px">
+    <div class="pricing-cat"><div class="pricing-cat-header">📹 VIDEO <span style="margin-left:auto;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)" id="vDisc"></span></div><div class="pricing-row"><div class="pricing-tier">Hourly</div><div class="pricing-val" id="vH">$150/hr</div></div><div class="pricing-row"><div class="pricing-tier">Half Day</div><div class="pricing-val" id="vHD">$600–$750</div></div><div class="pricing-row"><div class="pricing-tier">Full Day</div><div class="pricing-val" id="vFD">$1,000–$1,200</div></div></div>
+    <div class="pricing-cat"><div class="pricing-cat-header">📸 PHOTOGRAPHY <span style="margin-left:auto;font-family:'Space Mono',monospace;font-size:8px;color:var(--dim)" id="pDisc"></span></div><div class="pricing-row"><div class="pricing-tier">Hourly</div><div class="pricing-val" id="pH">$100/hr</div></div><div class="pricing-row"><div class="pricing-tier">Half Day</div><div class="pricing-val" id="pHD">$400–$500</div></div><div class="pricing-row"><div class="pricing-tier">Full Day</div><div class="pricing-val" id="pFD">$750–$900</div></div></div>
+    <div class="pricing-cat"><div class="pricing-cat-header">📹+📸 BUNDLE</div><div class="pricing-row"><div class="pricing-tier">Half Day</div><div class="pricing-val" id="bHD">$850–$1,000</div></div><div class="pricing-row"><div class="pricing-tier">Full Day</div><div class="pricing-val" id="bFD">$1,400–$1,700</div></div></div>
+    <div class="pricing-cat"><div class="pricing-cat-header">🎧 DJ</div><div class="pricing-row"><div class="pricing-tier">Opener · Local</div><div class="pricing-val">$100–$150</div></div><div class="pricing-row"><div class="pricing-tier">Support · Local</div><div class="pricing-val">$150–$200</div></div><div class="pricing-row"><div class="pricing-tier">Headliner · Local</div><div class="pricing-val">$200–$250</div></div><div class="pricing-row"><div class="pricing-tier">Opener · Out of State</div><div class="pricing-val">$250–$300</div></div><div class="pricing-row"><div class="pricing-tier">Support · Out of State</div><div class="pricing-val">$300–$400</div></div><div class="pricing-row"><div class="pricing-tier">Headliner · Out of State</div><div class="pricing-val">$400–$500</div></div></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══ WORKOUT ══ -->
+<div class="panel" id="panel-workout">
+  <div class="ph">
+    <div><div class="pt">WORKOUT</div><div class="ps">Goal: 195 → 170lbs @ 15% bf</div></div>
+    <div style="text-align:right"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--green);line-height:1" id="wCurHead">195</div><div style="font-family:'Space Mono',monospace;font-size:7px;color:var(--dim);letter-spacing:0.12em">LBS TODAY</div></div>
+  </div>
+  <div class="body-stats">
+    <div class="body-stat"><div class="body-stat-val" id="wCur">195</div><div class="body-stat-lbl">NOW</div></div>
+    <div class="body-stat"><div class="body-stat-val" style="color:var(--gold)">170</div><div class="body-stat-lbl">TARGET</div></div>
+    <div class="body-stat"><div class="body-stat-val" style="color:var(--blue)" id="wToGo">25</div><div class="body-stat-lbl">TO LOSE</div></div>
+    <div class="body-stat"><div class="body-stat-val" style="color:var(--green)" id="wPct">0%</div><div class="body-stat-lbl">DONE</div></div>
+  </div>
+  <div style="padding:10px 20px;border-bottom:1px solid var(--border);display:flex;gap:8px"><input class="inp" id="weightInp" type="number" placeholder="Log today's weight (lbs)"><button class="btn-gold" onclick="logWeight()">LOG</button></div>
+  <div style="padding:10px 20px 6px"><div style="font-family:'Space Mono',monospace;font-size:8px;letter-spacing:0.22em;color:var(--dim);margin-bottom:8px">UPPER / LOWER SPLIT</div></div>
+  <div class="split-days" id="splitDays"></div>
+  <div class="muscle-legend" id="muscleLegend"></div>
+  <div class="spacer"></div>
+  <div class="sl" id="workoutDayLbl">TODAY'S WORKOUT</div>
+  <div class="exercises-wrap" id="exercisesList"></div>
+  <div style="padding:10px 20px"><button class="btn-ghost" onclick="openModal('addExModal')" style="width:100%">+ Add Exercise</button></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══ JOURNAL ══ -->
+<div class="panel" id="panel-journal">
+  <div class="ph"><div><div class="pt">JOURNAL</div><div class="ps" id="jDate"></div></div></div>
+  <div class="spacer"></div>
+  <div class="sl">NEW ENTRY</div>
+  <div class="journal-new">
+    <div class="j-header-row"><div class="j-date-label" id="jEntryDate"></div><div class="j-stats-row"><div class="j-stat">Habits <span id="jHabitPct">0%</span></div></div></div>
+    <div class="j-director"><div class="j-dir-label">DIRECTOR'S NOTE — What am I making this week?</div><input class="j-dir-inp" id="dirNote" placeholder="Set your intention..."></div>
+    <textarea class="j-textarea" id="jText" placeholder="Write anything. This is yours."></textarea>
+    <div class="tags-row" id="jTagsRow"></div>
+    <div class="j-save-row"><button class="btn-gold" onclick="saveEntry()">SAVE ENTRY</button></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="sl">PAST ENTRIES</div>
+  <div class="journal-entries" id="jEntriesList"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══ HEALTH ══ -->
+<div class="panel" id="panel-health">
+  <div class="ph"><div><div class="pt">SYSTEM <span>HEALTH</span></div><div class="ps">Apr 21 → Jul 20 · 90 Days</div></div></div>
+  <div class="period-row">
+    <button class="period-btn active" id="hp-week" onclick="setHealthPeriod('week')">WEEK</button>
+    <button class="period-btn" id="hp-month" onclick="setHealthPeriod('month')">MONTH</button>
+    <button class="period-btn" id="hp-90" onclick="setHealthPeriod('90')">90 DAYS</button>
+  </div>
+  <div class="spacer"></div>
+  <div class="sl">OVERVIEW</div>
+  <div class="health-grid">
+    <div class="health-card"><div class="hc-title">Habit Completion</div><div class="hc-val" id="hcHabit">0%</div><div class="hc-sub" id="hcHabitSub">this week</div><div class="hc-bar"><div class="hc-fill" id="hcHabitFill" style="width:0%;background:var(--gold)"></div></div></div>
+    <div class="health-card"><div class="hc-title">Clean Mind</div><div class="hc-val" id="hcClean">0</div><div class="hc-sub">days clean</div><div class="hc-bar"><div class="hc-fill" id="hcCleanFill" style="width:0%;background:var(--green)"></div></div></div>
+    <div class="health-card"><div class="hc-title">Streak</div><div class="hc-val" id="hcStreak">0</div><div class="hc-sub">days perfect</div><div class="hc-bar"><div class="hc-fill" id="hcStreakFill" style="width:0%;background:var(--blue)"></div></div></div>
+    <div class="health-card"><div class="hc-title">Momentum</div><div class="hc-val" id="hcMom">0</div><div class="hc-sub">score / 100</div><div class="hc-bar"><div class="hc-fill" id="hcMomFill" style="width:0%;background:var(--gold)"></div></div></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="sl">RED FLAGS</div>
+  <div class="red-flags" id="redFlags"></div>
+  <div class="spacer"></div>
+  <div class="sl">BEST + WORST HABITS</div>
+  <div class="bw-grid" id="bwGrid"></div>
+  <div class="spacer"></div>
+  <div class="sl">RECENT WINS</div>
+  <div class="win-streak-section" id="recentWins"></div>
+  <div class="spacer"></div>
+  <div class="sl">ALL HABIT TRENDS</div>
+  <div class="habit-trend" id="habitTrends"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- ══ HAMBURGER PANEL CONTENT ══ -->
+<!-- TIME BLOCK -->
+<div class="panel" id="panel-timeblock">
+  <div class="ph"><div><div class="pt">TIME <span>BLOCKS</span></div><div class="ps">Daily Structure</div></div></div>
+  <div class="tb-wrap">
+    <div class="tb-row"><div class="tb-time">6–9 AM</div><div class="tb-block tb-morning"><div class="tb-name">MORNING BLOCK</div><div class="tb-tasks">Leave house · Gym · Emails + DMs · Review OS</div></div></div>
+    <div class="tb-row"><div class="tb-time">9–12 PM</div><div class="tb-block tb-build"><div class="tb-name">BUILD BLOCK</div><div class="tb-tasks">Shoots · Edits · Treatments · Music sessions</div></div></div>
+    <div class="tb-row"><div class="tb-time">12–2 PM</div><div class="tb-block tb-admin"><div class="tb-name">ADMIN BLOCK</div><div class="tb-tasks">Invoices · Outreach · Nu Saga planning · Finances</div></div></div>
+    <div class="tb-row"><div class="tb-time">2–6 PM</div><div class="tb-block tb-execute"><div class="tb-name">EXECUTION BLOCK</div><div class="tb-tasks">Content capture · Second sessions · Missions</div></div></div>
+    <div class="tb-row"><div class="tb-time">6–9 PM</div><div class="tb-block tb-gym"><div class="tb-name">GYM BLOCK</div><div class="tb-tasks">Upper A / Lower A / Upper B / Lower B</div></div></div>
+    <div class="tb-row"><div class="tb-time">9–12 AM</div><div class="tb-block tb-creative"><div class="tb-name">CREATIVE BLOCK</div><div class="tb-tasks">Music production · TikTok posts · Journal + finances</div></div></div>
+  </div>
+  <div class="divider"></div>
+  <div style="padding:0 20px;display:flex;flex-direction:column;gap:8px">
+    <div class="card" style="margin:0"><div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px">📹 VIDEO (WEEKLY)</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">2 client outreaches · Deliver/progress active project · Write 1 treatment · Create 1 mood board · Update portfolio</div></div>
+    <div class="card" style="margin:0"><div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px">🎪 NU SAGA (WEEKLY)</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">Review ticket sales · Confirm 1 artist/performer · Schedule promo · Review budget · Check venue logistics</div></div>
+    <div class="card" style="margin:0"><div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px">🎧 DJ (WEEKLY)</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">30min in crates · 1 booking outreach outside BHM · Record mix clip · Refine set structure</div></div>
+    <div class="card" style="margin:0"><div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px">🎵 MUSIC (WEEKLY)</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">1 session minimum · Save + label every idea · Every 2 weeks: demo ready · Study reference tracks</div></div>
+    <div class="card" style="margin:0"><div style="font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:0.1em;color:var(--gold);margin-bottom:6px">▶️ YOUTUBE (WEEKLY)</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">1 video filmed or scripted · 10min analytics review · Titles + thumbnails checked · Engage 5 creators</div></div>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+<!-- OUTPUT -->
+<div class="panel" id="panel-output">
+  <div class="ph"><div><div class="pt">OUTPUT</div><div class="ps" id="outputMonth"></div></div></div>
+  <div class="period-row">
+    <button class="period-btn active" id="op-month" onclick="setOutputPeriod('month')">MONTH</button>
+    <button class="period-btn" id="op-week" onclick="setOutputPeriod('week')">WEEK</button>
+  </div>
+  <div style="padding:16px 20px 0;display:flex;flex-direction:column;gap:20px" id="outputSections"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- CALENDAR -->
+<div class="panel" id="panel-calendar">
+  <div class="ph">
+    <div><div class="pt">CALENDAR</div><div class="ps" id="calLabel"></div></div>
+    <button class="btn-gold" onclick="openModal('addCalModal')">+ EVENT</button>
+  </div>
+  <div class="cal-header">
+    <button class="cal-nav" onclick="changeMonth(-1)">← PREV</button>
+    <div class="cal-month" id="calMonth"></div>
+    <button class="cal-nav" onclick="changeMonth(1)">NEXT →</button>
+  </div>
+  <div class="cal-grid">
+    <div class="cal-days-hdr"><div class="cal-day-lbl">S</div><div class="cal-day-lbl">M</div><div class="cal-day-lbl">T</div><div class="cal-day-lbl">W</div><div class="cal-day-lbl">T</div><div class="cal-day-lbl">F</div><div class="cal-day-lbl">S</div></div>
+    <div class="cal-cells" id="calCells"></div>
+  </div>
+  <div class="divider"></div>
+  <div class="sl" id="calEventsLabel">UPCOMING</div>
+  <div class="cal-events-list" id="calEventsList"></div>
+  <div class="spacer"></div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="addProjectModal">
+  <div class="modal"><button class="modal-close" onclick="closeModal('addProjectModal')">✕</button><div class="modal-title">ADD PROJECT</div><div class="modal-body"><input class="inp" id="pjName" placeholder="Project name"><div class="form-row"><select class="sel" id="pjType" style="flex:1"><option value="video">📹 Video</option><option value="photo">📸 Photography</option><option value="music">🎵 Music</option><option value="nusaga">🎪 Nu Saga</option><option value="dj">🎧 DJ</option><option value="design">🎨 Design</option></select><input class="inp" id="pjPayout" placeholder="Payout $" type="number" style="width:90px;flex:none"></div><div class="form-row"><input class="inp" id="pjClient" placeholder="Client name"><input class="inp" id="pjDue" type="date" style="flex:none;width:130px"></div><input class="inp" id="pjNotes" placeholder="Notes"><button class="btn-gold" onclick="addProject()" style="width:100%">ADD PROJECT</button></div></div>
+</div>
+
+<div class="modal-overlay" id="addExModal">
+  <div class="modal"><button class="modal-close" onclick="closeModal('addExModal')">✕</button><div class="modal-title">ADD EXERCISE</div><div class="modal-body"><input class="inp" id="exName" placeholder="Exercise name"><div class="form-row"><select class="sel" id="exMuscle" style="flex:1"><option value="chest">🔴 Chest</option><option value="back">🟢 Back</option><option value="shoulders">🟠 Shoulders</option><option value="arms">🟡 Arms</option><option value="legs">🔵 Legs</option><option value="core">🟣 Core</option><option value="cardio">⚪ Cardio</option></select><input class="inp" id="exSets" placeholder="Sets" type="number" style="width:60px;flex:none"><input class="inp" id="exReps" placeholder="Reps" type="number" style="width:60px;flex:none"></div><div class="form-row"><input class="inp" id="exWeight" placeholder="Weight (lbs)" type="number"><input class="inp" id="exNotes" placeholder="Notes"></div><button class="btn-gold" onclick="addExercise()" style="width:100%">ADD</button></div></div>
+</div>
+
+<div class="modal-overlay" id="addCalModal">
+  <div class="modal"><button class="modal-close" onclick="closeModal('addCalModal')">✕</button><div class="modal-title">ADD EVENT</div><div class="modal-body"><input class="inp" id="calEvName" placeholder="Event name"><div class="form-row"><input class="inp" id="calEvDate" type="date"><select class="sel" id="calEvType" style="flex:1"><option value="event">🎪 Nu Saga Event</option><option value="shoot">📹 Shoot</option><option value="dj">🎧 DJ Set</option><option value="festival">🎵 Festival</option><option value="deadline">⚡ Deadline</option><option value="personal">👤 Personal</option></select></div><input class="inp" id="calEvNotes" placeholder="Notes"><button class="btn-gold" onclick="addCalEvent()" style="width:100%">ADD EVENT</button></div></div>
+</div>
+
+<!-- HAMBURGER OVERLAY -->
+<div class="hamburger-overlay" id="hmOverlay" onclick="closeMenu()"></div>
+<div class="hamburger-menu" id="hmMenu">
+  <div class="hm-title">More Tools</div>
+  <button class="hm-btn" id="hm-timeblock" onclick="switchToMenu('timeblock')"><div class="hm-icon">⏱️</div><div class="hm-content"><div class="hm-name">Schedule</div><div class="hm-sub">Time blocks + weekly tasks</div></div></button>
+  <button class="hm-btn" id="hm-output" onclick="switchToMenu('output')"><div class="hm-icon">📊</div><div class="hm-content"><div class="hm-name">Output</div><div class="hm-sub">Platform content tracker</div></div></button>
+  <button class="hm-btn" id="hm-calendar" onclick="switchToMenu('calendar')"><div class="hm-icon">📅</div><div class="hm-content"><div class="hm-name">Calendar</div><div class="hm-sub">Events + deadlines</div></div></button>
 </div>
 
 <div class="toast" id="toast"></div>
 
-<script>
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-const KEY = 'sho_combined_v1';
+<!-- NAV — 7 tabs -->
+<nav class="nav">
+  <button class="nav-btn active" id="nav-daily" onclick="switchPanel('daily')"><div class="nav-icon">☀️</div><div class="nav-label">Daily</div></button>
+  <button class="nav-btn" id="nav-missions" onclick="switchPanel('missions')"><div class="nav-icon">🎯</div><div class="nav-label">Missions</div></button>
+  <button class="nav-btn" id="nav-projects" onclick="switchPanel('projects')"><div class="nav-icon">📁</div><div class="nav-label">Projects</div></button>
+  <button class="nav-btn" id="nav-finance" onclick="switchPanel('finance')"><div class="nav-icon">💰</div><div class="nav-label">Finance</div></button>
+  <button class="nav-btn" id="nav-workout" onclick="switchPanel('workout')"><div class="nav-icon">💪</div><div class="nav-label">Workout</div></button>
+  <button class="nav-btn" id="nav-journal" onclick="switchPanel('journal')"><div class="nav-icon">📓</div><div class="nav-label">Journal</div></button>
+  <button class="nav-btn" id="nav-health" onclick="switchPanel('health')"><div class="nav-icon">❤️</div><div class="nav-label">Health</div></button>
+</nav>
 
-const GOAL_DEFS = [
-  { id:'workout', icon:'💪', name:'Workout',         sub:'Gym — no negotiating',             tag:'Body',    color:'#c8765a' },
-  { id:'house',   icon:'🚪', name:'Leave the House', sub:'Get outside. Change environment',  tag:'Mind',    color:'#7a9bd5' },
-  { id:'room',    icon:'🧹', name:'Clean Room',      sub:'Space reflects headspace',         tag:'Space',   color:'#9b7ac8' },
-  { id:'tiktok',  icon:'📱', name:'Daily TikTok',    sub:'Primary driver for event growth',  tag:'Content', color:'#d4af37' },
-  { id:'saga',    icon:'🎪', name:'Saga Story Post', sub:'IG story for Nu Saga — keep alive',tag:'Event',   color:'#d4af37' },
-  { id:'tracker', icon:'✅', name:'Update Tracker',  sub:'Open it. Check it off. Done',      tag:'OS',      color:'#4caf6e' },
+<script>
+const KEY='sho_final_v1';
+const START=new Date('2025-04-21');
+const MAY1=new Date('2025-05-01');
+
+const HABITS=[
+  {id:'house',   icon:'🚪',name:'Leave the House',   sub:'Get outside — anchor the day',           tag:'Mind',  color:'#7a9bd5'},
+  {id:'gym',     icon:'💪',name:'Gym / Movement',     sub:'Non-negotiable',                         tag:'Body',  color:'#c8765a'},
+  {id:'emails',  icon:'📧',name:'Emails + Messages',  sub:'One session — emails, DMs, texts',       tag:'Ops',   color:'#9b7ac8'},
+  {id:'outreach',icon:'🤝',name:'One Outreach',       sub:'Client, booker, artist, or promoter',    tag:'$$$',   color:'#d4af37'},
+  {id:'tiktok',  icon:'📱',name:'Personal TikTok × 2',sub:'2 minimum — drives Nu Saga traffic',     tag:'Growth',color:'#d4af37'},
+  {id:'nstik',   icon:'🎪',name:'Nu Saga TikTok',     sub:'4× per week minimum',                    tag:'Event', color:'#d4af37'},
+  {id:'igstory', icon:'📸',name:'Nu Saga IG Story',   sub:'Keep the brand alive every day',         tag:'Event', color:'#d4af37'},
+  {id:'music',   icon:'🎵',name:'Music Session',      sub:'30 min min — 1 track every 2 weeks',     tag:'Music', color:'#4caf6e'},
+  {id:'finances',icon:'💰',name:'Log Finances',       sub:'One transaction — face the numbers',     tag:'$$$',   color:'#4caf6e'},
+  {id:'journal', icon:'📓',name:'Journal Entry',      sub:'Director\'s note + reflection',          tag:'OS',    color:'#4caf6e'},
 ];
 
-const TREE_NODES = {
-  'n-setfest':       { track:'urgent', xp:100, requires:[] },
-  'n-mvedit':        { track:'video',  xp:75,  requires:[] },
-  'n-promo1':        { track:'event',  xp:75,  requires:[] },
-  'n-dm20':          { track:'event',  xp:75,  requires:[] },
-  'n-festset':       { track:'fest',   xp:150, requires:['n-setfest'] },
-  'n-festcontent':   { track:'fest',   xp:100, requires:['n-setfest'] },
-  'n-festnet':       { track:'fest',   xp:100, requires:['n-setfest'] },
-  'n-festpromo':     { track:'event',  xp:75,  requires:['n-promo1','n-dm20'] },
-  'n-setmay1':       { track:'urgent', xp:150, requires:['n-festset'] },
-  'n-mvdone':        { track:'video',  xp:200, requires:['n-mvedit'] },
-  'n-tiktok3':       { track:'event',  xp:125, requires:['n-festpromo'] },
-  'n-igstory':       { track:'event',  xp:75,  requires:['n-festpromo'] },
-  'n-shotlist':      { track:'event',  xp:75,  requires:['n-festcontent'] },
-  'n-may30concept':  { track:'event',  xp:100, requires:['n-dm20'] },
-  'n-pendingshoot':  { track:'video',  xp:75,  requires:[] },
-  'n-loadincontent': { track:'event',  xp:75,  requires:['n-shotlist'] },
-  'n-perform':       { track:'event',  xp:300, requires:['n-setmay1'] },
-  'n-nightcontent':  { track:'event',  xp:150, requires:['n-loadincontent'] },
-  'n-samenight':     { track:'event',  xp:100, requires:['n-nightcontent','n-perform'] },
+const J_TAGS=['Video','Nu Saga','DJ','Music','YouTube','Health','Money','Ideas','People','Wins','Struggles'];
+
+const PROJECT_WORKFLOWS={
+  video:[{name:'Client Brief + Treatment',days:-7},{name:'Mood Board Created',days:-6},{name:'Shot List Built',days:-5},{name:'Shoot Day Executed',days:-3},{name:'Rough Cut Complete',days:-2},{name:'Client Review + Notes',days:-1},{name:'Final Cut Delivered',days:0}],
+  photo:[{name:'Shot List + Mood Board',days:-3},{name:'Shoot Day Executed',days:-2},{name:'Selects Culled',days:-1},{name:'Final Edits Delivered',days:0}],
+  music:[{name:'Concept + Reference Tracks',days:-14},{name:'Beat + Arrangement Done',days:-10},{name:'Vocals + Layers Recorded',days:-7},{name:'Mix + Master',days:-3},{name:'Release + Upload',days:0}],
+  nusaga:[{name:'Concept + Theme Locked',days:-21},{name:'Venue Confirmed',days:-18},{name:'Lineup Confirmed',days:-14},{name:'Promo Materials Live',days:-10},{name:'Ticket Sales Push',days:-7},{name:'Final Logistics Check',days:-2},{name:'Event Executed',days:0},{name:'Event Recap Documented',days:1}],
+  dj:[{name:'Set Built for Venue',days:-7},{name:'Contract + Payment Confirmed',days:-5},{name:'Travel Arranged',days:-3},{name:'Soundcheck',days:0},{name:'Set Performed',days:0}],
+  design:[{name:'Brief + Direction Agreed',days:-5},{name:'First Draft Delivered',days:-3},{name:'Revisions',days:-1},{name:'Final Files Delivered',days:0}],
 };
 
-const TREE_TRACKS = {
-  event:   ['n-promo1','n-dm20','n-festpromo','n-tiktok3','n-igstory','n-shotlist','n-may30concept','n-loadincontent','n-perform','n-nightcontent','n-samenight'],
-  video:   ['n-mvedit','n-mvdone','n-pendingshoot'],
-  festival:['n-festset','n-festcontent','n-festnet'],
+const SPLIT=[
+  {day:'MON',focus:'Upper A',rest:false},{day:'TUE',focus:'Lower A',rest:false},
+  {day:'WED',focus:'Rest',rest:true},{day:'THU',focus:'Upper B',rest:false},
+  {day:'FRI',focus:'Lower B',rest:false},{day:'SAT',focus:'Rest',rest:true},{day:'SUN',focus:'Rest',rest:true},
+];
+
+const MUSCLE_COLORS={chest:'#e05555',back:'#4caf6e',shoulders:'#e07833',arms:'#d4af37',legs:'#5b9bd5',core:'#9b7ac8',cardio:'#e8956a'};
+
+const OUTPUT_PLATFORMS=[
+  {id:'sho-yt',   icon:'▶️',name:'YouTube',        handle:'Personal',color:'#ff4444',items:[{label:'Videos (long-form)',monthTarget:4,weekTarget:1}]},
+  {id:'sho-ig',   icon:'📸',name:'Sho Personal IG',handle:'@sho',    color:'#e1306c',items:[{label:'Posts (2/week)',monthTarget:8,weekTarget:2},{label:'Stories (daily)',monthTarget:30,weekTarget:7}]},
+  {id:'sho-tik',  icon:'🎵',name:'Sho TikTok',     handle:'@sho',    color:'#69c9d0',items:[{label:'TikToks (2/day)',monthTarget:60,weekTarget:14}]},
+  {id:'vid-ig',   icon:'📸',name:'Video/Photo IG',  handle:'Portfolio',color:'#e1306c',items:[{label:'Posts (2/week)',monthTarget:8,weekTarget:2}]},
+  {id:'nusaga-ig',icon:'🎪',name:'Nu Saga IG',      handle:'@nusaga', color:'#e1306c',items:[{label:'Posts (3/week)',monthTarget:12,weekTarget:3},{label:'Stories (daily)',monthTarget:30,weekTarget:7}]},
+  {id:'nusaga-tk',icon:'🎵',name:'Nu Saga TikTok',  handle:'@nusaga', color:'#69c9d0',items:[{label:'TikToks (4/week)',monthTarget:16,weekTarget:4}]},
+];
+
+const TREE_DEF={
+  'n-setfest':{track:'urgent',xp:100,req:[]},'n-mvedit':{track:'video',xp:75,req:[]},'n-promo1':{track:'event',xp:75,req:[]},'n-dm20':{track:'event',xp:75,req:[]},'n-invoice':{track:'build',xp:50,req:[]},'n-contract':{track:'build',xp:75,req:[]},
+  'n-festset':{track:'fest',xp:150,req:['n-setfest']},'n-festcontent':{track:'fest',xp:100,req:['n-setfest']},'n-festnet':{track:'fest',xp:100,req:['n-setfest']},'n-festpromo':{track:'event',xp:75,req:['n-promo1','n-dm20']},'n-behance':{track:'build',xp:75,req:[]},'n-linktree':{track:'build',xp:50,req:[]},
+  'n-setmay1':{track:'urgent',xp:150,req:['n-festset']},'n-mvdone':{track:'video',xp:200,req:['n-mvedit']},'n-tiktok3':{track:'event',xp:125,req:['n-festpromo']},'n-igstory':{track:'event',xp:75,req:['n-festpromo']},'n-shotlist':{track:'event',xp:75,req:['n-festcontent']},'n-may30concept':{track:'event',xp:100,req:['n-dm20']},'n-pendingshoot':{track:'video',xp:75,req:[]},'n-reel':{track:'build',xp:100,req:[]},'n-pressphoto':{track:'build',xp:50,req:[]},
+  'n-loadincontent':{track:'event',xp:75,req:['n-shotlist']},'n-perform':{track:'event',xp:300,req:['n-setmay1']},'n-nightcontent':{track:'event',xp:150,req:['n-loadincontent']},'n-samenight':{track:'event',xp:100,req:['n-nightcontent','n-perform']},'n-may1announce':{track:'event',xp:100,req:['n-perform']},'n-eventrecap':{track:'build',xp:75,req:['n-perform']},
+  'n-3shorts':{track:'event',xp:150,req:['n-nightcontent']},'n-yt1':{track:'video',xp:250,req:['n-nightcontent']},'n-retainer':{track:'video',xp:400,req:['n-perform']},'n-epk':{track:'build',xp:150,req:['n-reel','n-mix']},'n-mix':{track:'build',xp:100,req:['n-reel']},'n-booking1':{track:'event',xp:300,req:['n-retainer']},'n-nusagapage':{track:'build',xp:100,req:['n-eventrecap']},'n-bizbank':{track:'build',xp:75,req:[]},'n-may30exec':{track:'event',xp:400,req:['n-may30concept']},
+  'n-sponsor':{track:'build',xp:200,req:['n-epk','n-nusagapage']},'n-track1':{track:'build',xp:300,req:['n-mix']},'n-5kmonth':{track:'video',xp:500,req:['n-retainer']},'n-photorelaunch':{track:'build',xp:200,req:['n-reel']},'n-event3':{track:'event',xp:400,req:['n-may30exec']},'n-ytconsistent':{track:'video',xp:300,req:['n-yt1']},'n-90checkpoint':{track:'build',xp:500,req:['n-sponsor','n-5kmonth','n-event3']},
 };
 
-const TOTAL_TREE_XP = Object.values(TREE_NODES).reduce((s,n)=>s+n.xp,0);
-const DAILY_XP_PER = 30;
-const TOTAL_XP = TOTAL_TREE_XP + (GOAL_DEFS.length * DAILY_XP_PER);
+const TRACK_IDS={
+  event:Object.keys(TREE_DEF).filter(k=>TREE_DEF[k].track==='event'||TREE_DEF[k].track==='fest'||TREE_DEF[k].track==='urgent'),
+  video:Object.keys(TREE_DEF).filter(k=>TREE_DEF[k].track==='video'),
+  build:Object.keys(TREE_DEF).filter(k=>TREE_DEF[k].track==='build'),
+};
 
-function todayKey() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const TYPE_COLORS={video:'#5b9bd5',photo:'#e1306c',music:'#4caf6e',nusaga:'#d4af37',dj:'#9b7ac8',design:'#e07833'};
+const TYPE_ICONS={video:'📹',photo:'📸',music:'🎵',nusaga:'🎪',dj:'🎧',design:'🎨'};
+
+function loadState(){try{const s=localStorage.getItem(KEY);return s?JSON.parse(s):ds();}catch(e){return ds();}}
+function ds(){return{days:{},tree:[],cm:{},energy:{},wins:{},finance:{txns:[],miles:[]},workout:{weights:{},sessions:{}},journal:{entries:[]},projects:[],output:{},calendar:[],clientType:'company',healthPeriod:'week',outputPeriod:'month',selectedDay:new Date().getDay()};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+let state=loadState();
+let today=todayKey();
+if(!state.days[today])state.days[today]={done:[]};
+
+function todayKey(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;}
+function fmtDate(d){return d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();}
+
+// ── NAV ──
+function switchPanel(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const nb=document.getElementById('nav-'+name);if(nb)nb.classList.add('active');
+  if(name==='health')renderHealth();
+  if(name==='workout')renderWorkout();
+  if(name==='finance')renderFinance();
+  if(name==='journal')renderJournal();
+  if(name==='output')renderOutput();
+  if(name==='calendar')renderCalendar();
+  if(name==='projects')renderProjects();
 }
 
-function loadState() {
-  try {
-    const s = localStorage.getItem(KEY);
-    return s ? JSON.parse(s) : { days:{}, tree:[], streak:0, session:'morning' };
-  } catch(e) { return { days:{}, tree:[], streak:0, session:'morning' }; }
+// ── HAMBURGER ──
+function openMenu(){
+  document.getElementById('hmOverlay').classList.add('open');
+  document.getElementById('hmMenu').classList.add('open');
+}
+function closeMenu(){
+  document.getElementById('hmOverlay').classList.remove('open');
+  document.getElementById('hmMenu').classList.remove('open');
+}
+function switchToMenu(name){
+  closeMenu();
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  document.querySelectorAll('.hm-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('hm-'+name).classList.add('active');
+  if(name==='output')renderOutput();
+  if(name==='calendar')renderCalendar();
 }
 
-function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch(e) {} }
-
-let state = loadState();
-let today = todayKey();
-if (!state.days[today]) state.days[today] = { done:[] };
-
-// ══════════════════════════════════════
-// TABS
-// ══════════════════════════════════════
-function switchTab(t) {
-  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
-  document.getElementById('tab-'+t).classList.add('active');
-  document.getElementById('panel-'+t).classList.add('active');
+// ── DAILY ──
+function renderDaily(){
+  const d=new Date();
+  document.getElementById('dailyDate').textContent=fmtDate(d);
+  const diff=Math.ceil((MAY1-d)/(1000*60*60*24));
+  document.getElementById('countdownD').textContent=Math.max(0,diff);
+  const d90=Math.floor((d-START)/(1000*60*60*24))+1;
+  document.getElementById('m90day').textContent='D'+Math.min(d90,90);
+  renderHabits();renderHistory();updateMomentum();renderCleanMind();
+  document.getElementById('winInput').value=state.wins[today]||'';
+  document.getElementById('winInput').oninput=()=>{state.wins[today]=document.getElementById('winInput').value;save();};
+  const jd=new Date();
+  document.getElementById('jDate').textContent=fmtDate(jd);
+  document.getElementById('jEntryDate').textContent=jd.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase();
 }
 
-// ══════════════════════════════════════
-// DAILY
-// ══════════════════════════════════════
-function renderGoals() {
-  const list = document.getElementById('goalsList');
-  const todayDone = state.days[today]?.done || [];
-  list.innerHTML = '';
-  GOAL_DEFS.forEach(g => {
-    const done = todayDone.includes(g.id);
-    const div = document.createElement('div');
-    div.className = 'goal' + (done?' done':'');
-    div.onclick = () => toggleGoal(g.id);
-    div.innerHTML = `
-      <div class="goal-check">${done?'✓':''}</div>
-      <div class="goal-icon">${g.icon}</div>
-      <div class="goal-content">
-        <div class="goal-name">${g.name}</div>
-        <div class="goal-sub">${g.sub}</div>
-      </div>
-      <div class="goal-tag" style="color:${g.color};border-color:${g.color}35">${g.tag}</div>
-    `;
+function renderHabits(){
+  const list=document.getElementById('habitsList');const done=state.days[today]?.done||[];list.innerHTML='';
+  HABITS.forEach(h=>{
+    const isDone=done.includes(h.id);const div=document.createElement('div');div.className='habit'+(isDone?' done':'');div.onclick=()=>toggleHabit(h.id);
+    div.innerHTML=`<div class="hcheck">${isDone?'✓':''}</div><div class="hicon">${h.icon}</div><div class="hcontent"><div class="hname">${h.name}</div><div class="hsub">${h.sub}</div></div><div class="htag" style="color:${h.color};border-color:${h.color}35">${h.tag}</div>`;
     list.appendChild(div);
   });
 }
 
-function toggleGoal(id) {
-  if (!state.days[today]) state.days[today] = { done:[] };
-  const done = state.days[today].done;
-  const idx = done.indexOf(id);
-  if (idx > -1) { done.splice(idx,1); }
-  else {
-    done.push(id);
-    const g = GOAL_DEFS.find(x=>x.id===id);
-    showToast(`✓ ${g?.name}`);
-  }
-  save();
-  renderGoals(); updateDailyProgress(); checkComplete(); renderHistory(); updateXP();
+function toggleHabit(id){
+  if(!state.days[today])state.days[today]={done:[]};
+  const done=state.days[today].done;const idx=done.indexOf(id);
+  if(idx>-1)done.splice(idx,1);else{done.push(id);const h=HABITS.find(x=>x.id===id);toast(`✓ ${h?.name}`);}
+  save();renderHabits();updateMomentum();renderHistory();
+  document.getElementById('jHabitPct').textContent=Math.round((state.days[today].done.length/HABITS.length)*100)+'%';
 }
 
-function updateDailyProgress() {
-  const done = state.days[today]?.done?.length || 0;
-  const total = GOAL_DEFS.length;
-  const pct = Math.round(done/total*100);
-  document.getElementById('dailyProgFill').style.width = pct+'%';
-  document.getElementById('dailyProgPct').textContent = `${done} / ${total}`;
-  document.getElementById('dailyBadge').textContent = `${done}/${total}`;
+function updateMomentum(){
+  const done=state.days[today]?.done?.length||0;const total=HABITS.length;const streak=calcStreak();
+  const treePct=state.tree.length/Math.max(1,Object.keys(TREE_DEF).length);
+  const score=Math.round((done/total*50)+(Math.min(streak,30)/30*30)+(treePct*20));
+  document.getElementById('momScore').textContent=score;document.getElementById('momFill').style.width=score+'%';
+  document.getElementById('mStreak').textContent=streak;document.getElementById('mDone').textContent=`${done}/${total}`;
+  document.getElementById('streakNum').textContent=streak+' days';
+  document.getElementById('hcMom').textContent=score;document.getElementById('hcMomFill').style.width=score+'%';
 }
 
-function checkComplete() {
-  const done = state.days[today]?.done?.length || 0;
-  const banner = document.getElementById('completeBanner');
-  if (done === GOAL_DEFS.length) {
-    banner.classList.add('show');
-    calcStreak();
-  } else {
-    banner.classList.remove('show');
+function calcStreak(){let s=0;const keys=Object.keys(state.days).sort().reverse();for(const k of keys){if((state.days[k]?.done?.length||0)>=HABITS.length)s++;else break;}return s;}
+
+function renderHistory(){
+  const c=document.getElementById('historyDots');c.innerHTML='';
+  for(let i=13;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);
+    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const done=state.days[k]?.done?.length||0;const total=HABITS.length;const isToday=k===today;
+    const dot=document.createElement('div');dot.className='day-dot'+(done===total?' full':done>0?' partial':'')+(isToday?' today':'');dot.textContent=String(d.getDate()).padStart(2,'0');c.appendChild(dot);
   }
 }
 
-function calcStreak() {
-  let streak = 0;
-  const keys = Object.keys(state.days).sort().reverse();
-  for (const k of keys) {
-    if ((state.days[k]?.done?.length||0) === GOAL_DEFS.length) streak++;
-    else break;
+function resetToday(){if(!confirm('Clear today?'))return;state.days[today]={done:[]};save();renderHabits();updateMomentum();renderHistory();}
+
+// ── CLEAN MIND ──
+function renderCleanMind(){
+  const cm=state.cm||{};
+  const last7=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;last7.push({k,d,val:cm[k]});}
+  let streak=0;const keys=Object.keys(cm).sort().reverse();for(const k of keys){if(cm[k]===true)streak++;else break;}
+  document.getElementById('cmStreak').textContent=streak;
+  document.getElementById('hcClean').textContent=streak;document.getElementById('hcCleanFill').style.width=Math.min(100,streak/90*100)+'%';
+  const wrap=document.getElementById('cmDays');wrap.innerHTML='';
+  const dayLetters=['S','M','T','W','T','F','S'];
+  last7.forEach(({k,d,val})=>{
+    const isToday=k===today;const dot=document.createElement('div');
+    dot.className='cm-dot'+(val===true?' clean':val===false?' broke':'')+(isToday?' today':'');
+    dot.innerHTML=`<div>${dayLetters[d.getDay()]}</div><div class="cm-dot-lbl">${String(d.getDate()).padStart(2,'0')}</div>`;wrap.appendChild(dot);
+  });
+}
+
+function logCleanMind(clean){
+  if(!state.cm)state.cm={};state.cm[today]=clean;save();renderCleanMind();
+  toast(clean?'🧠 Clean — streak extended':'Streak reset — Day 1 starts tomorrow');
+}
+
+// ── TREE ──
+function completeNode(el){
+  if(el.classList.contains('locked')||el.classList.contains('complete'))return;
+  el.classList.add('complete');const id=el.id;
+  if(!state.tree.includes(id)){state.tree.push(id);save();}
+  updateTreeLocks();updateTreeProgress();
+  document.getElementById('missionXP').textContent=calcTreeXP()+' XP';
+  toast(`✓ +${TREE_DEF[id]?.xp||0} XP`);
+}
+
+function updateTreeLocks(){
+  Object.entries(TREE_DEF).forEach(([id,cfg])=>{
+    const el=document.getElementById(id);if(!el||el.classList.contains('complete'))return;
+    el.classList.toggle('locked',!cfg.req.every(r=>state.tree.includes(r)));
+  });
+  (state.projects||[]).forEach(p=>{
+    (p.steps||[]).forEach((_,si)=>{
+      const el=document.getElementById(`pn-${p.id}-${si}`);if(!el||el.classList.contains('complete'))return;
+      el.classList.toggle('locked',si>0&&!p.steps[si-1].done);
+    });
+  });
+}
+
+function updateTreeProgress(){
+  const calc=(ids)=>({done:ids.filter(id=>state.tree.includes(id)).length,total:ids.length});
+  const ev=calc(TRACK_IDS.event);const vi=calc(TRACK_IDS.video);const bu=calc(TRACK_IDS.build);
+  const pDone=(state.projects||[]).reduce((s,p)=>s+(p.steps||[]).filter(st=>st.done).length,0);
+  const pTotal=(state.projects||[]).reduce((s,p)=>s+(p.steps||[]).length,0);
+  const set=(pre,d,t)=>{const f=document.getElementById('tp'+pre);const c=document.getElementById('tp'+pre+'C');if(f)f.style.width=t>0?Math.round(d/t*100)+'%':'0%';if(c)c.textContent=`${d}/${t}`;};
+  set('Event',ev.done,ev.total);set('Video',vi.done,vi.total);set('Build',bu.done,bu.total);set('Proj',pDone,pTotal);
+}
+
+function calcTreeXP(){return state.tree.reduce((s,id)=>s+(TREE_DEF[id]?.xp||0),0);}
+function resetTree(){if(!confirm('Reset all missions?'))return;state.tree=[];save();document.querySelectorAll('.node').forEach(n=>n.classList.remove('complete'));updateTreeLocks();updateTreeProgress();document.getElementById('missionXP').textContent='0 XP';}
+
+// ── PROJECTS ──
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+function addProject(){
+  const name=document.getElementById('pjName').value;if(!name){toast('Enter project name');return;}
+  const type=document.getElementById('pjType').value;const due=document.getElementById('pjDue').value;
+  const payout=parseFloat(document.getElementById('pjPayout').value)||0;
+  const dueDate=new Date(due);
+  const steps=(PROJECT_WORKFLOWS[type]||[]).map(w=>{const sd=new Date(dueDate);sd.setDate(sd.getDate()+w.days);return{name:w.name,dueDate:sd.toISOString().split('T')[0],done:false};});
+  const proj={id:Date.now(),name,type,due,payout,client:document.getElementById('pjClient').value,steps,notes:document.getElementById('pjNotes').value};
+  if(!state.projects)state.projects=[];state.projects.push(proj);save();
+  closeModal('addProjectModal');['pjName','pjPayout','pjClient','pjNotes'].forEach(id=>{document.getElementById(id).value='';});
+  renderProjects();renderProjectNodes();updateTreeProgress();toast(`✓ ${name} added`);
+}
+
+function renderProjects(){
+  const list=document.getElementById('projectsList');const projects=state.projects||[];
+  if(!projects.length){list.innerHTML='<div style="padding:32px;text-align:center;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim)">No projects yet<br>Tap + ADD to create one</div>';return;}
+  list.innerHTML='';
+  projects.forEach(p=>{
+    const steps=p.steps||[];const done=steps.filter(s=>s.done).length;const total=steps.length;const pct=total>0?Math.round(done/total*100):0;const color=TYPE_COLORS[p.type]||'#fff';
+    const card=document.createElement('div');card.className='project-card';
+    const stepsHtml=steps.map((s,i)=>{const over=!s.done&&s.dueDate&&new Date(s.dueDate)<new Date();return`<div class="proj-step${s.done?' done':''}" onclick="toggleProjStep(${p.id},${i})"><div class="proj-step-check">${s.done?'✓':''}</div><div class="proj-step-name">${s.name}</div><div class="proj-step-due${over?' overdue':''}">${s.dueDate||''}</div></div>`;}).join('');
+    card.innerHTML=`<div class="project-header"><div class="project-type-dot" style="background:${color}"></div><div class="project-content"><div class="project-name">${TYPE_ICONS[p.type]||''} ${p.name}</div><div class="project-meta">${p.client?p.client+' · ':''}Due ${p.due}</div></div>${p.payout?`<div class="project-payout">$${p.payout.toLocaleString()}</div>`:''}</div><div class="project-steps">${stepsHtml}</div><div class="project-progress"><div class="proj-prog-bar"><div class="proj-prog-fill" style="width:${pct}%;background:${color}"></div></div><div class="proj-pct">${pct}%</div><button class="proj-delete" onclick="deleteProject(${p.id})">×</button></div>`;
+    list.appendChild(card);
+  });
+}
+
+function toggleProjStep(projId,stepIdx){
+  const proj=(state.projects||[]).find(p=>p.id===projId);if(!proj)return;
+  proj.steps[stepIdx].done=!proj.steps[stepIdx].done;save();renderProjects();renderProjectNodes();updateTreeProgress();updateTreeLocks();
+}
+
+function deleteProject(id){if(!confirm('Delete?'))return;state.projects=(state.projects||[]).filter(p=>p.id!==id);save();renderProjects();renderProjectNodes();updateTreeProgress();}
+
+function renderProjectNodes(){
+  const wrap=document.getElementById('projectNodesWrap');if(!wrap)return;
+  const projects=state.projects||[];if(!projects.length){wrap.innerHTML='';return;}
+  wrap.innerHTML='<div class="tree-connector">↓ Active Projects ↓</div>';
+  projects.forEach(p=>{
+    const color=TYPE_COLORS[p.type]||'#4caf6e';const win=document.createElement('div');win.className='tree-window';
+    const hdr=document.createElement('div');hdr.className='twh';hdr.innerHTML=`<div class="tw-date">${p.due}</div><div class="tw-title" style="color:${color}">${TYPE_ICONS[p.type]||''} ${p.name}</div>${p.payout?`<div class="tw-tag" style="color:var(--green);border-color:rgba(76,175,110,0.35)">$${p.payout.toLocaleString()}</div>`:''}<div class="tw-div"></div>`;
+    const grid=document.createElement('div');grid.className='node-grid';
+    (p.steps||[]).forEach((s,si)=>{
+      const locked=si>0&&!p.steps[si-1].done&&!s.done;const done=s.done;
+      const node=document.createElement('div');node.className=`node track-project${locked?' locked':''}${done?' complete':''}`;node.id=`pn-${p.id}-${si}`;node.onclick=()=>toggleProjStep(p.id,si);
+      node.innerHTML=`<div class="node-inner"><span class="node-icon">📋</span><div class="node-name">${s.name}</div><div class="node-desc">Due: ${s.dueDate||'—'}</div><div class="node-xp">Step ${si+1}</div><div class="node-badge done">✓</div><div class="node-badge lock">🔒</div></div>`;
+      grid.appendChild(node);
+    });
+    win.appendChild(hdr);win.appendChild(grid);wrap.appendChild(win);
+  });
+}
+
+// ── FINANCE ──
+let logTab='income';let rec=false;
+function setLogTab(t){logTab=t;['income','expense','mile'].forEach(x=>{document.getElementById('lt-'+x).classList.toggle('active',x===t);});document.getElementById('logIE').style.display=t==='mile'?'none':'block';document.getElementById('logMile').style.display=t==='mile'?'block':'none';}
+function toggleRec(){rec=!rec;const b=document.getElementById('recBox');b.textContent=rec?'✓':'';b.classList.toggle('on',rec);}
+function logTxn(){
+  if(logTab==='mile'){const miles=parseFloat(document.getElementById('mMiles').value);if(!miles){toast('Enter miles');return;}state.finance.miles.push({from:document.getElementById('mFrom').value,to:document.getElementById('mTo').value,miles,date:document.getElementById('mDate').value||today,purpose:document.getElementById('mPurpose').value});document.getElementById('mMiles').value='';save();renderFinance();toast(`✓ ${miles} miles logged`);return;}
+  const desc=document.getElementById('logDesc').value;const amt=parseFloat(document.getElementById('logAmt').value);if(!desc||!amt){toast('Fill description + amount');return;}
+  state.finance.txns.push({type:logTab,desc,amount:amt,category:document.getElementById('logCat').value,date:document.getElementById('logDate').value||today,recurring:rec,id:Date.now()});
+  document.getElementById('logDesc').value='';document.getElementById('logAmt').value='';save();renderFinance();toast(`✓ $${amt} ${logTab} logged`);
+}
+function deleteTxn(id){state.finance.txns=state.finance.txns.filter(t=>t.id!==id);save();renderFinance();}
+function renderFinance(){
+  const now=new Date();const mKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  document.getElementById('finMonth').textContent=now.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+  const mTxns=(state.finance.txns||[]).filter(t=>t.date&&t.date.startsWith(mKey));
+  const income=mTxns.filter(t=>t.type==='income').reduce((s,t)=>s+t.amount,0);
+  const expenses=mTxns.filter(t=>t.type==='expense').reduce((s,t)=>s+t.amount,0);const net=income-expenses;
+  document.getElementById('finIncome').textContent='$'+income.toLocaleString();document.getElementById('finExpenses').textContent='$'+expenses.toLocaleString();
+  document.getElementById('finNet').textContent=(net>=0?'+':'-')+' $'+Math.abs(net).toLocaleString();
+  document.getElementById('finIncomeC').textContent=mTxns.filter(t=>t.type==='income').length+' entries';
+  document.getElementById('finExpenseC').textContent=mTxns.filter(t=>t.type==='expense').length+' entries';
+  const fp=Math.min(100,Math.round(income/2300*100));document.getElementById('floorPct').textContent=fp+'%';document.getElementById('floorFill').style.width=fp+'%';
+  const gp=Math.min(100,Math.round(income/10000*100));document.getElementById('goalPct').textContent=gp+'%';document.getElementById('goalFill').style.width=gp+'%';
+  const list=document.getElementById('txnList');const recent=[...(state.finance.txns||[])].reverse().slice(0,15);
+  list.innerHTML=recent.length===0?'<div style="padding:14px;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim);text-align:center">No transactions yet</div>':'';
+  recent.forEach(t=>{const div=document.createElement('div');div.className='txn';div.innerHTML=`<div class="txn-dot ${t.type}"></div><div class="txn-content"><div class="txn-desc">${t.desc}</div><div class="txn-meta">${t.category} · ${t.date}${t.recurring?' · 🔄':''}</div></div><div class="txn-amount ${t.type}">${t.type==='income'?'+':'-'}$${t.amount.toLocaleString()}</div><button class="txn-del" onclick="deleteTxn(${t.id})">×</button>`;list.appendChild(div);});
+  const miles=(state.finance.miles||[]).reduce((s,m)=>s+m.miles,0);
+  document.getElementById('totalMiles').textContent=miles.toFixed(1)+' miles';document.getElementById('mileDeduct').textContent=`Est. tax deduction: $${(miles*0.67).toFixed(2)} (IRS $0.67/mile)`;
+}
+function setClient(t){
+  state.clientType=t;save();['company','individual','friend'].forEach(x=>document.getElementById('ct-'+x).classList.toggle('active',x===t));
+  const d=t==='company'?1:t==='individual'?0.85:0.7;const lbl=t==='company'?'':t==='individual'?'15% off':'30% off';
+  const fmt=(a,b)=>`$${Math.round(a*d).toLocaleString()}–$${Math.round(b*d).toLocaleString()}`;
+  document.getElementById('vH').textContent=`$${Math.round(150*d)}/hr`;document.getElementById('vHD').textContent=fmt(600,750);document.getElementById('vFD').textContent=fmt(1000,1200);document.getElementById('vDisc').textContent=lbl;
+  document.getElementById('pH').textContent=`$${Math.round(100*d)}/hr`;document.getElementById('pHD').textContent=fmt(400,500);document.getElementById('pFD').textContent=fmt(750,900);document.getElementById('pDisc').textContent=lbl;
+  document.getElementById('bHD').textContent=fmt(850,1000);document.getElementById('bFD').textContent=fmt(1400,1700);
+}
+
+// ── WORKOUT ──
+function renderWorkout(){
+  const weights=state.workout?.weights||{};const latest=Object.entries(weights).sort().reverse()[0]?.[1]||195;
+  const toGo=Math.max(0,latest-170);const pct=Math.round(Math.max(0,(25-toGo)/25*100));
+  ['wCurHead','wCur'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=latest;});
+  document.getElementById('wToGo').textContent=toGo;document.getElementById('wPct').textContent=pct+'%';
+  const selDay=state.selectedDay!==undefined?state.selectedDay:new Date().getDay();
+  const sc=document.getElementById('splitDays');sc.innerHTML='';
+  SPLIT.forEach((s,i)=>{const btn=document.createElement('div');btn.className='split-day'+(s.rest?' rest':'')+(i===selDay?' active':'');btn.onclick=()=>{if(!s.rest){state.selectedDay=i;save();renderWorkout();}};btn.innerHTML=`<div class="split-day-name">${s.day}</div><div class="split-day-focus">${s.focus}</div>`;sc.appendChild(btn);});
+  document.getElementById('workoutDayLbl').textContent=SPLIT[selDay].day+' — '+SPLIT[selDay].focus;
+  const lg=document.getElementById('muscleLegend');lg.innerHTML='';Object.entries(MUSCLE_COLORS).forEach(([m,c])=>{const d=document.createElement('div');d.className='ml-item';d.innerHTML=`<div class="ml-dot" style="background:${c}"></div><div class="ml-label">${m}</div>`;lg.appendChild(d);});
+  renderExercises(selDay);
+}
+function logWeight(){const v=parseFloat(document.getElementById('weightInp').value);if(!v)return;if(!state.workout.weights)state.workout.weights={};state.workout.weights[todayKey()]=v;save();renderWorkout();document.getElementById('weightInp').value='';toast(`✓ ${v}lbs logged`);}
+function renderExercises(dayIdx){
+  const key='d'+dayIdx;const exercises=(state.workout.sessions||{})[key]||[];const list=document.getElementById('exercisesList');list.innerHTML='';
+  if(!exercises.length){list.innerHTML='<div style="padding:20px;text-align:center;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim)">No exercises — tap + Add below</div>';return;}
+  exercises.forEach((ex,idx)=>{
+    const color=MUSCLE_COLORS[ex.muscle]||'#fff';const sameW=ex.sets&&ex.sets.length>=3&&ex.sets.every(s=>s.weight===ex.sets[0]?.weight);
+    const card=document.createElement('div');card.className='exercise-card';
+    const setsHtml=(ex.sets||[]).map((s,si)=>`<div class="set-chip${s.done?' done':''}" onclick="toggleSet(${dayIdx},${idx},${si})">${s.weight?s.weight+'lbs × ':''}${s.reps} reps</div>`).join('');
+    card.innerHTML=`<div class="ex-header"><div class="muscle-dot" style="background:${color}"></div><div class="ex-name">${ex.name}</div><div class="ex-pr">${(ex.sets||[]).length} sets</div>${sameW?'<div style="font-size:12px" title="Increase weight">⬆️</div>':''}</div><div class="sets-row">${setsHtml}<div class="add-set-btn" onclick="addSet(${dayIdx},${idx})">+ Set</div></div>`;
+    list.appendChild(card);
+  });
+}
+function addExercise(){
+  const name=document.getElementById('exName').value;if(!name){toast('Enter exercise name');return;}
+  const dayIdx=state.selectedDay||0;const key='d'+dayIdx;if(!state.workout.sessions)state.workout.sessions={};if(!state.workout.sessions[key])state.workout.sessions[key]=[];
+  const sets=parseInt(document.getElementById('exSets').value)||3;const reps=parseInt(document.getElementById('exReps').value)||10;const weight=parseInt(document.getElementById('exWeight').value)||0;
+  state.workout.sessions[key].push({name,muscle:document.getElementById('exMuscle').value,notes:document.getElementById('exNotes').value,sets:Array.from({length:sets},()=>({weight,reps,done:false}))});
+  save();closeModal('addExModal');renderWorkout();document.getElementById('exName').value='';document.getElementById('exWeight').value='';toast(`✓ ${name} added`);
+}
+function toggleSet(dayIdx,exIdx,setIdx){const key='d'+dayIdx;state.workout.sessions[key][exIdx].sets[setIdx].done=!state.workout.sessions[key][exIdx].sets[setIdx].done;save();renderExercises(dayIdx);}
+function addSet(dayIdx,exIdx){const key='d'+dayIdx;const ex=state.workout.sessions[key][exIdx];const last=ex.sets[ex.sets.length-1]||{weight:0,reps:10};ex.sets.push({weight:last.weight,reps:last.reps,done:false});save();renderExercises(dayIdx);}
+
+// ── JOURNAL ──
+let activeTags=[];
+function renderJournal(){
+  const tr=document.getElementById('jTagsRow');tr.innerHTML='';
+  J_TAGS.forEach(t=>{const btn=document.createElement('button');btn.className='tag-btn'+(activeTags.includes(t)?' active':'');btn.textContent=t;btn.onclick=()=>{const idx=activeTags.indexOf(t);if(idx>-1)activeTags.splice(idx,1);else activeTags.push(t);renderJournal();};tr.appendChild(btn);});
+  const done=state.days[today]?.done?.length||0;document.getElementById('jHabitPct').textContent=Math.round(done/HABITS.length*100)+'%';
+  const list=document.getElementById('jEntriesList');const entries=[...(state.journal?.entries||[])].reverse();
+  list.innerHTML=entries.length===0?'<div style="padding:20px;text-align:center;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim)">No entries yet</div>':'';
+  entries.forEach(e=>{const div=document.createElement('div');div.className='j-entry';div.innerHTML=`<div class="entry-top"><div class="entry-date">${e.date}</div><div class="entry-pct">${e.habitPct||0}% habits</div></div>${e.director?`<div class="entry-director">"${e.director}"</div>`:''}<div class="entry-body">${e.text.substring(0,200)}${e.text.length>200?'...':''}</div>${e.tags?.length?`<div class="entry-tags">${e.tags.map(t=>`<div class="entry-tag">${t}</div>`).join('')}</div>`:''}`; list.appendChild(div);});
+}
+function saveEntry(){
+  const text=document.getElementById('jText').value;if(!text.trim()){toast('Write something first');return;}
+  const done=state.days[today]?.done?.length||0;if(!state.journal)state.journal={entries:[]};
+  state.journal.entries.push({date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}).toUpperCase(),director:document.getElementById('dirNote').value,text,tags:[...activeTags],habitPct:Math.round(done/HABITS.length*100),ts:Date.now()});
+  document.getElementById('jText').value='';document.getElementById('dirNote').value='';activeTags=[];save();renderJournal();toast('✓ Entry saved');
+}
+
+// ── OUTPUT ──
+let outputPeriod='month';
+function setOutputPeriod(p){outputPeriod=p;['month','week'].forEach(x=>document.getElementById('op-'+x).classList.toggle('active',x===p));renderOutput();}
+function getWeekKey(){const now=new Date();const day=now.getDay();const diff=now.getDate()-day+(day===0?-6:1);const mon=new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+(now.getDay()===0?-6:1));return mon.toISOString().split('T')[0];}
+function renderOutput(){
+  const now=new Date();document.getElementById('outputMonth').textContent=now.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+  const wrap=document.getElementById('outputSections');wrap.innerHTML='';if(!state.output)state.output={};
+  const mKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;const wKey=getWeekKey();
+  OUTPUT_PLATFORMS.forEach(platform=>{
+    const sec=document.createElement('div');sec.className='platform-section';
+    const hdr=document.createElement('div');hdr.className='platform-header';hdr.innerHTML=`<div class="platform-icon">${platform.icon}</div><div class="platform-name" style="color:${platform.color}">${platform.name}</div><div class="platform-handle">${platform.handle}</div>`;sec.appendChild(hdr);
+    const items=document.createElement('div');items.className='output-items';
+    platform.items.forEach(item=>{
+      const target=outputPeriod==='month'?item.monthTarget:item.weekTarget;
+      const periodKey=outputPeriod==='month'?mKey:wKey;const fullKey=`${platform.id}-${item.label}-${periodKey}`;
+      const count=state.output[fullKey]||0;const pct=Math.min(100,Math.round(count/target*100));
+      const card=document.createElement('div');card.className='output-item';
+      card.innerHTML=`<div class="output-item-row"><div class="output-label">${item.label}</div><div class="output-count" style="color:${count>=target?'var(--green)':'var(--white)'}">${count}</div><div class="output-target">/ ${target}</div></div><div class="output-bar"><div class="output-fill" style="width:${pct}%;background:${count>=target?'var(--green)':platform.color}"></div></div><div class="output-btns"><div class="out-btn" onclick="adjOutput('${fullKey}',-1)">−1</div><div class="out-btn" onclick="adjOutput('${fullKey}',1)">+1</div><div class="out-btn" onclick="adjOutput('${fullKey}',5)">+5</div></div>`;
+      items.appendChild(card);
+    });
+    sec.appendChild(items);wrap.appendChild(sec);const dv=document.createElement('div');dv.className='divider';dv.style.margin='0';wrap.appendChild(dv);
+  });
+}
+function adjOutput(key,delta){if(!state.output)state.output={};state.output[key]=Math.max(0,(state.output[key]||0)+delta);save();renderOutput();}
+
+// ── CALENDAR ──
+let calDate=new Date();
+function changeMonth(dir){calDate.setMonth(calDate.getMonth()+dir);renderCalendar();}
+const EV_COLORS={event:'var(--gold)',shoot:'var(--blue)',dj:'var(--purple)',festival:'var(--orange)',deadline:'var(--red)',personal:'var(--silver)'};
+function renderCalendar(){
+  const now=new Date();document.getElementById('calLabel').textContent=fmtDate(now);
+  document.getElementById('calMonth').textContent=calDate.toLocaleDateString('en-US',{month:'long',year:'numeric'}).toUpperCase();
+  const firstDay=new Date(calDate.getFullYear(),calDate.getMonth(),1).getDay();
+  const daysInMonth=new Date(calDate.getFullYear(),calDate.getMonth()+1,0).getDate();
+  const daysInPrev=new Date(calDate.getFullYear(),calDate.getMonth(),0).getDate();
+  const cells=document.getElementById('calCells');cells.innerHTML='';
+  const events=state.calendar||[];
+  for(let i=firstDay-1;i>=0;i--){const cell=document.createElement('div');cell.className='cal-cell other-month';cell.innerHTML=`<div class="cal-date">${daysInPrev-i}</div>`;cells.appendChild(cell);}
+  for(let d=1;d<=daysInMonth;d++){
+    const dStr=`${calDate.getFullYear()}-${String(calDate.getMonth()+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday=dStr===todayKey();const dayEvents=events.filter(e=>e.date===dStr);
+    const cell=document.createElement('div');cell.className='cal-cell'+(isToday?' today-cell':'');
+    cell.innerHTML=`<div class="cal-date">${d}</div>${dayEvents.map(e=>`<div class="cal-ev-dot" style="background:${EV_COLORS[e.type]||'var(--gold)'}"></div>`).join('')}`;
+    cell.onclick=()=>showDayEvents(dStr);cells.appendChild(cell);
   }
-  state.streak = streak; save();
-  document.getElementById('streakNum').textContent = streak;
+  const upcoming=[...events].filter(e=>e.date>=todayKey()).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,10);
+  document.getElementById('calEventsLabel').textContent='UPCOMING';
+  const evList=document.getElementById('calEventsList');
+  evList.innerHTML=upcoming.length===0?'<div style="padding:14px;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim)">No upcoming events</div>':'';
+  upcoming.forEach(e=>{const div=document.createElement('div');div.className='cal-event';div.innerHTML=`<div class="cal-ev-color" style="background:${EV_COLORS[e.type]||'var(--gold)'}"></div><div class="cal-ev-content"><div class="cal-ev-name">${e.name}</div><div class="cal-ev-meta">${e.date}${e.notes?' · '+e.notes:''}</div></div><button class="cal-ev-del" onclick="deleteCalEvent(${e.id})">×</button>`;evList.appendChild(div);});
+}
+function showDayEvents(dateStr){
+  const events=(state.calendar||[]).filter(e=>e.date===dateStr);
+  document.getElementById('calEventsLabel').textContent=dateStr;
+  const list=document.getElementById('calEventsList');list.innerHTML=events.length===0?'<div style="padding:14px;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim)">No events this day</div>':'';
+  events.forEach(e=>{const div=document.createElement('div');div.className='cal-event';div.innerHTML=`<div class="cal-ev-color" style="background:${EV_COLORS[e.type]||'var(--gold)'}"></div><div class="cal-ev-content"><div class="cal-ev-name">${e.name}</div><div class="cal-ev-meta">${e.notes||''}</div></div><button class="cal-ev-del" onclick="deleteCalEvent(${e.id})">×</button>`;list.appendChild(div);});
+}
+function addCalEvent(){
+  const name=document.getElementById('calEvName').value;if(!name){toast('Enter event name');return;}
+  if(!state.calendar)state.calendar=[];
+  state.calendar.push({id:Date.now(),name,date:document.getElementById('calEvDate').value,type:document.getElementById('calEvType').value,notes:document.getElementById('calEvNotes').value});
+  document.getElementById('calEvName').value='';document.getElementById('calEvNotes').value='';
+  save();closeModal('addCalModal');renderCalendar();toast('✓ Event added');
+}
+function deleteCalEvent(id){state.calendar=(state.calendar||[]).filter(e=>e.id!==id);save();renderCalendar();}
+
+// ── HEALTH ──
+let healthPeriod='week';
+function setHealthPeriod(p){healthPeriod=p;['week','month','90'].forEach(x=>document.getElementById('hp-'+x).classList.toggle('active',x===p));renderHealth();}
+function renderHealth(){
+  const days=healthPeriod==='week'?7:healthPeriod==='month'?30:90;
+  const periodDays=[];for(let i=days-1;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);periodDays.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`);}
+  const total=periodDays.reduce((s,k)=>s+(state.days[k]?.done?.length||0),0);const possible=periodDays.length*HABITS.length;const habitPct=possible>0?Math.round(total/possible*100):0;
+  const streak=calcStreak();const score=parseInt(document.getElementById('momScore')?.textContent)||0;
+  document.getElementById('hcHabit').textContent=habitPct+'%';document.getElementById('hcHabitSub').textContent=healthPeriod+' avg';document.getElementById('hcHabitFill').style.width=habitPct+'%';
+  document.getElementById('hcStreak').textContent=streak;document.getElementById('hcStreakFill').style.width=Math.min(100,streak/90*100)+'%';
+  document.getElementById('hcMom').textContent=score;document.getElementById('hcMomFill').style.width=score+'%';
+  renderCleanMind();
+
+  // red flags
+  const flags=document.getElementById('redFlags');flags.innerHTML='';
+  HABITS.forEach(h=>{const last3=periodDays.slice(-3);const missed=last3.every(k=>!(state.days[k]?.done||[]).includes(h.id));if(missed&&periodDays.length>=3){const div=document.createElement('div');div.className='red-flag';div.innerHTML=`<div class="rf-dot"></div><div class="rf-text">${h.icon} ${h.name} — 3+ days missed</div>`;flags.appendChild(div);}});
+  if(!flags.children.length)flags.innerHTML='<div style="padding:10px 0;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--green)">✓ No red flags this period</div>';
+
+  // best + worst
+  const habitRates=HABITS.map(h=>{const done=periodDays.filter(k=>(state.days[k]?.done||[]).includes(h.id)).length;return{h,pct:Math.round(done/periodDays.length*100)};}).sort((a,b)=>b.pct-a.pct);
+  const bwGrid=document.getElementById('bwGrid');bwGrid.innerHTML='';
+  const best=habitRates[0];const worst=habitRates[habitRates.length-1];
+  if(best){const d=document.createElement('div');d.className='bw-card';d.innerHTML=`<div class="bw-label">🏆 BEST HABIT</div><div class="bw-val" style="color:var(--green)">${best.h.icon} ${best.h.name}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px">${best.pct}% completion</div>`;bwGrid.appendChild(d);}
+  if(worst){const d=document.createElement('div');d.className='bw-card';d.innerHTML=`<div class="bw-label">⚠️ NEEDS WORK</div><div class="bw-val" style="color:var(--red)">${worst.h.icon} ${worst.h.name}</div><div style="font-family:'Space Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px">${worst.pct}% completion</div>`;bwGrid.appendChild(d);}
+
+  // recent wins
+  const wins=document.getElementById('recentWins');wins.innerHTML='';
+  const recentWinEntries=Object.entries(state.wins||{}).filter(([,v])=>v&&v.trim()).sort(([a],[b])=>b.localeCompare(a)).slice(0,5);
+  if(!recentWinEntries.length){wins.innerHTML='<div style="padding:10px 20px;font-family:\'Space Mono\',monospace;font-size:9px;color:var(--dim)">No wins logged yet — add one in Daily</div>';}
+  else{recentWinEntries.forEach(([date,win])=>{const d=document.createElement('div');d.className='win-streak-card';d.style.margin='0 20px 6px';d.innerHTML=`<div class="win-streak-label">${date}</div><div class="win-streak-val">"${win}"</div>`;wins.appendChild(d);});}
+
+  // trends
+  const trends=document.getElementById('habitTrends');trends.innerHTML='';
+  habitRates.forEach(({h,pct})=>{const div=document.createElement('div');div.className='trend-row';div.innerHTML=`<div class="trend-name">${h.icon} ${h.name.substring(0,12)}</div><div class="trend-bar"><div class="trend-fill" style="width:${pct}%;background:${h.color}"></div></div><div class="trend-pct">${pct}%</div>`;trends.appendChild(div);});
 }
 
-function renderHistory() {
-  const container = document.getElementById('historyDots');
-  container.innerHTML = '';
-  for (let i=13; i>=0; i--) {
-    const d = new Date(); d.setDate(d.getDate()-i);
-    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const done = state.days[k]?.done?.length || 0;
-    const total = GOAL_DEFS.length;
-    const isToday = k === today;
-    const dot = document.createElement('div');
-    dot.className = 'day-dot'+(done===total?' full':done>0?' partial':'')+(isToday?' today':'');
-    dot.textContent = String(d.getDate()).padStart(2,'0');
-    dot.title = `${k}: ${done}/${total}`;
-    container.appendChild(dot);
-  }
-}
+// ── TOAST ──
+let toastT;
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),2000);}
 
-function setSession(s) {
-  state.session = s; save();
-  document.getElementById('btnMorning').classList.toggle('active', s==='morning');
-  document.getElementById('btnNight').classList.toggle('active', s==='night');
-}
-
-// ══════════════════════════════════════
-// TREE
-// ══════════════════════════════════════
-function completeNode(el) {
-  if (el.classList.contains('locked') || el.classList.contains('complete')) return;
-  el.classList.add('complete');
-  const id = el.id;
-  if (!state.tree.includes(id)) { state.tree.push(id); save(); }
-  updateTreeLocks(); updateTreeProgress(); updateXP();
-  showToast(`✓ +${TREE_NODES[id]?.xp||0} XP`);
-  const done = state.tree.length;
-  document.getElementById('treeBadge').textContent = done;
-}
-
-function updateTreeLocks() {
-  Object.entries(TREE_NODES).forEach(([id, cfg]) => {
-    const el = document.getElementById(id);
-    if (!el || el.classList.contains('complete')) return;
-    const met = cfg.requires.every(r => state.tree.includes(r));
-    el.classList.toggle('locked', !met);
-  });
-}
-
-function updateTreeProgress() {
-  Object.entries(TREE_TRACKS).forEach(([track, ids]) => {
-    const done = ids.filter(id => state.tree.includes(id)).length;
-    const total = ids.length;
-    const pct = Math.round(done/total*100);
-    const cap = track.charAt(0).toUpperCase()+track.slice(1);
-    const fill = document.getElementById('tp'+cap);
-    const count = document.getElementById('tp'+cap+'C');
-    if (fill) fill.style.width = pct+'%';
-    if (count) count.textContent = `${done}/${total}`;
-  });
-  document.getElementById('treeBadge').textContent = state.tree.length;
-}
-
-// ══════════════════════════════════════
-// XP (combined daily + tree)
-// ══════════════════════════════════════
-function updateXP() {
-  const treeXP = state.tree.reduce((s,id)=>s+(TREE_NODES[id]?.xp||0),0);
-  // count all daily completions across all days
-  const dailyXP = Object.values(state.days).reduce((s,d)=>s+((d.done?.length||0)*DAILY_XP_PER),0);
-  const total = treeXP + dailyXP;
-  const pct = Math.min(100, Math.round(total/TOTAL_XP*100));
-  document.getElementById('xpFill').style.width = pct+'%';
-  document.getElementById('xpNum').textContent = total.toLocaleString()+' XP';
-}
-
-// ══════════════════════════════════════
-// COUNTDOWN
-// ══════════════════════════════════════
-function updateCountdown() {
-  const now = new Date();
-  const may1 = new Date('2025-05-01T00:00:00');
-  const diff = Math.ceil((may1-now)/(1000*60*60*24));
-  document.getElementById('daysLeft').textContent = Math.max(0,diff);
-}
-
-// ══════════════════════════════════════
-// RESETS
-// ══════════════════════════════════════
-function resetDaily() {
-  if (!confirm('Clear today\'s daily goals?')) return;
-  state.days[today] = { done:[] }; save();
-  renderGoals(); updateDailyProgress(); checkComplete(); renderHistory(); updateXP();
-}
-
-function resetTree() {
-  if (!confirm('Reset entire skill tree progress?')) return;
-  state.tree = []; save();
-  document.querySelectorAll('.node').forEach(n => {
-    n.classList.remove('complete');
-  });
-  updateTreeLocks(); updateTreeProgress(); updateXP();
-}
-
-// ══════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════
-let toastTimer;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>t.classList.remove('show'), 2000);
-}
-
-// ══════════════════════════════════════
-// INIT
-// ══════════════════════════════════════
-function init() {
-  // date
-  const d = new Date();
-  document.getElementById('headerDate').textContent =
-    d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'}).toUpperCase();
-
-  // session auto-detect
-  const hour = d.getHours();
-  setSession(hour < 14 ? 'morning' : 'night');
-  document.getElementById('sessionTime').textContent =
-    d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-
-  // restore tree
-  state.tree.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add('complete');
-  });
-
-  updateTreeLocks();
-  updateTreeProgress();
-  renderGoals();
-  updateDailyProgress();
-  checkComplete();
-  renderHistory();
-  calcStreak();
-  updateXP();
-  updateCountdown();
+// ── INIT ──
+function init(){
+  state.tree.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('complete');});
+  updateTreeLocks();updateTreeProgress();
+  document.getElementById('missionXP').textContent=calcTreeXP()+' XP';
+  ['logDate','mDate','calEvDate','pjDue'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=todayKey();});
+  setClient(state.clientType||'company');
+  renderDaily();renderFinance();renderJournal();renderOutput();renderCalendar();renderProjectNodes();renderProjects();
 }
 
 init();
